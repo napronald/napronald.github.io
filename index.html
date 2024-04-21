@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ronald Nap | Home</title>
+    <meta name="description" content="Homepage of Ronald Nap">
+    <meta name="author" content="Ronald Nap">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="shortcut icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,300,600">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="./MySmile/smile.css">
+</head>
+
+
+<div id="smile" class="day">
+    <div id="smile-face"></div>
+</div>
+
+
+<div id="progress-scroller">
+    <div id="progress-bar"></div>
+    <div id="progress-sections">
+      <a href="#bio">Bio</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#leadership">Leadership</a>
+      <a href="#awards">Awards</a>
+      <!-- <a href="#schedule">Schedule</a> -->
+    </div>
+  </div>
+
+
+<body>
+    <div class="container">
+        <section class="header">
+            <div class="row">
+                <div class="three columns">
+                    <a href="/"><img class="u-max-full-width" src='images/profile.jpeg'></a>
+                </div>
+
+
+                <div class="five columns">
+                    <h1>Ronald Nap</h1>
+                    <p>Undergraduate @ Dept. of Applied Math</p>
+                    <p>University of California, Merced</p>
+                    <p>ronaldnap17 [AT] gmail.com</p>
+                    <p>
+                        <a href="https://www.linkedin.com/in/ronaldnap" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/napronald" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </p>
+                    <button id="theme-toggle" class="toggle-button">TOGGLE DARK/LIGHT MODE</button>
+                </div>
+
+
+                <div class="four columns">
+                    <div class="chart-container" style="position: relative; height:40vh; width:40vw; margin-left: -120px;">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+
+        </section>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#bio">Bio</a></li>
+                <li><a href="https://napronald.github.io/Resume.pdf" target="_blank">CV</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#leadership">Leadership</a></li>
+                <li><a href="#awards">Awards</a></li>
+                <!-- <li><a href="#schedule">Schedule</a></li> -->
+            </ul>
+        </nav>
+        
+
+        <div id="bio" class="section-divider">
+            <h4>Bio</h4>
+            <p>
+                I am an undergraduate student studying Applied Math at UC Merced, where I am fortunate to be advised by  <a href="https://faculty.ucmerced.edu/rmarcia/index.html" target="_blank">Professor Roummel Marcia</a>. My interests lie in developing and evaluating machine learning models that pinpoint predictive variables for key insights. 
+            </p>
+            <p>
+                I am actively seeking a summer internship in data science or machine learning. My background includes hands-on experience in training, evaluating, and optimizing models. I am particularly keen on exploring innovative applications of machine learning across various industries. I eagerly anticipate contributing to the data-driven sector, networking with industry professionals, and discovering the expansive potential of data science!
+            </p>
+        </div>
+
+
+        <div id="projects" class="section-divider">
+            <h4>Projects</h4>
+            
+            <div class="project box">
+                <div class="project-image">
+                    <img src="images/CCNet.jpeg" alt="Project Image Description">
+                </div>
+                <div class="project-details">
+                    <h5>Contrastive Pre-Training and Multiple Instance Learning for Predicting Tumor Microsatellite Instability</h5>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Python</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">PyTorch</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">SciKit</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">SLURM</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Docker</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">LaTeX</span>
+                    <!-- <p class="authors">Ronald Nap, Mohammed Aburid, Roummel Marcia</p> -->
+                    <p class="project-description">This project focuses on advancing machine learning methods to analyze whole slide imaging (WSI) data for gastrointestinal cancer classification. Specifically, self-supervised learning and multiple-instance learning are employed to perform weakly supervised classification.</p>
+                    <div class="project-links">
+                        <a class="button" href="#">Arxiv</a>
+                        <a class="button" href="https://github.com/napronald/GI-Cancer-MSI-CCNet-MIL">Code</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project box">
+                <div class="project-image">
+                    <img src="images/WGAN.jpeg" alt="Project Image Description">
+                </div>
+                <div class="project-details">
+                    <h5>Synthetic Data Generation for Deep Learning Model Enhancement</h5>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Python</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">PyTorch</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">SciKit</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">AWS</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Git</span>
+
+                    <p class="project-description">This project focuses on enhancing an emotion recognition classifier by iteratively leveraging a Generative Adversarial Network to synthesize additional training data. Through this iterative process, the model aims to increase the accuracy of classifying emotions.</p>
+                    <div class="project-links">
+                        <a class="button" href="https://github.com/napronald/Synthetic-Data-Generation-for-Deep-Learning-Model-Enhancement/blob/main/README.md">Details</a>
+                        <a class="button" href="https://github.com/napronald/Synthetic-Data-Generation-for-Deep-Learning-Model-Enhancement/tree/main">Code</a>
+                    </div>
+                </div>
+            </div>  
+            
+            <div class="project box">
+                <div class="project-image">
+                    <img src="images/digits.jpeg" alt="Project Image Description">
+                </div>
+                <div class="project-details">
+                    <h5>DigitPro99 - Interactive Digit Classification Application</h5>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Tensorflow</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">HTML</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">CSS</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">JavaScript</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Firebase</span>
+
+                    <p class="project-description">This project is dedicated to digit recognition. The goal is to develop a robust model capable of performing digit detection and the accurate classification of digits from 0 to 99 with plans to expand its capabilities in the future.</p>
+                    <div class="project-links">
+                        <a class="button" href="https://napronald.github.io/DigitPro99/">Demo</a>
+                        <a class="button" href="https://github.com/napronald/DigitPro99">Code</a>
+                    </div>
+                </div>
+            </div>  
+
+
+            <div class="project box">
+                <div class="project-image">
+                    <img src="images/histo.jpeg" alt="Project Image Description">
+                </div>
+                <div class="project-details">
+                    <h5>Lung Cancer Diagnosis with Medical Imaging</h5>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Python</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">PyTorch</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">SciKit</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">LaTeX</span>
+
+                    <p class="project-description">This project compares traditional machine learning models and deep learning approaches to improve diagnostic processes in medical imaging.</p>
+                    <div class="project-links">
+                        <a class="button" href="https://github.com/napronald/Lung-Cancer-Diagnosis-with-Medical-Imaging/blob/main/Written%20Report.pdf">Report</a>
+                        <a class="button" href="https://github.com/napronald/Lung-Cancer-Diagnosis-with-Medical-Imaging/tree/main">Code</a>
+                    </div>
+                </div>
+            </div>  
+
+
+            <div class="project box">
+                <div class="project-image">
+                    <img src="images/model.jpeg" alt="Project Image Description">
+                </div>
+                <div class="project-details">
+                    <h5>Modeling the Relationship Between CO2 Emissions and Human Population</h5>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Python</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">Colab</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">NumPy</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">SciKit</span>
+                    <span class="tech-stack" style="margin-bottom: 0.75em;">LaTeX</span>
+
+                    <p class="project-description">This project explores the intricate relationship between atmospheric CO2 concentration and human activities. The aim is to develop a mathematical model that provides a comprehensive understanding of the factors driving atmospheric CO2 levels and their interactions with the human population.</p>
+                    <div class="project-links">
+                        <a class="button" href="https://github.com/napronald/Modeling-the-Relationship-Between-CO2-Emissions-and-Human-Population/blob/main/Report.pdf">Report</a>
+                        <a class="button" href="https://colab.research.google.com/drive/18ziAUaxkwcjIAIkuyw5jClQf8QpZL5UW?usp=sharing">Code</a>
+                    </div>
+                </div>
+            </div>  
+
+
+        </div>
+        <div id="experience" class="section-divider">
+            <h4>Experience</h4>
+     
+
+            <div class="experience-container">
+                <div class="experience-role">
+                    <img src="images/ucm.jpeg" alt="Optimization Group Logo" class="experience-logo">
+                    <div class="experience-details">
+                        <h5>Computational Optimization Group - Undergraduate Researcher</h5>
+                        <p>February 2023 - Present, CA, Merced</p>
+                        <ul>
+                            <li>Developed a two-stage weakly supervised framework for predicting Tumor Microsatellite Instability using Contrastive Learning and Multiple Instance Learning.</li>
+                            <li>Achieved a 0.02 increase in AUROC, surpassing previous state-of-the-art methods. Accepted for publication at IEEE EMBC 2024.</li>
+                        </ul>
+                    </div>
+                </div>
+        
+                <div class="experience-role">
+                    <img src="images/suri.jpeg" alt="Summer Research Institute Logo" class="experience-logo">
+                    <div class="experience-details">
+                        <h5>Summer Undergraduate Research Institute - Undergraduate Researcher</h5>
+                        <p>June 2023 - August 2023, CA, Merced</p>
+                        <ul>
+                            <li>Led a team in the implementation and exploration of Generative Adversarial Networks for enhancing the robustness and accuracy of classification models through the incorporation of synthetic data.</li>
+                            <li>Achieved a notable increase in model performance, enhancing the F1 score by 0.04 through an iterative refinement process that evaluated and selected high-quality synthetic images, significantly boosting the accuracy and robustness of the classification model.</li>
+                        </ul>
+                    </div>
+                </div>
+        
+                <div class="experience-role">
+                    <img src="images/llnl.jpeg" alt="LLNL Logo" class="experience-logo">
+                    <div class="experience-details">
+                        <h5>Lawrence Livermore National Laboratory - Data Science Challenge</h5>
+                        <p>July 2023 - August 2023, CA, Livermore</p>
+                        <ul>
+                            <li>Designed an LSTM-based classification model to diagnose irregular heartbeats, along with a 1D CNN model for precise reconstruction of cardiac transmembrane potentials.</li>
+                            <li>Presented findings and implications to a diverse scientific audience through a poster presentation for researchers and staff.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        
+
+
+        <div id="leadership" class="section-divider">
+            <h4>Leadership</h4>
+            <div class="leadership-role">
+                <h5><i class="fa fa-users" aria-hidden="true"></i> SIAM Undergraduate Representative</h5>
+                <p>Representing undergraduate student interests and promoting mathematics and its applications among students at UC Merced. Follow UC Merced SIAM on <a href="https://www.instagram.com/ucmsiam/" target="_blank">Instagram</a>.</p>
+            </div>
+            <div class="leadership-role">
+                <h5><i class="fa fa-chalkboard-teacher" aria-hidden="true"></i> Learning Assistant</h5>
+                <p>Providing guidance and support to peers in Calculus, helping to clarify complex concepts and enhance overall academic performance. Learn more about the <a href="https://hhmi-ie.ucmerced.edu/capacity-building-projects/learning-assistant-program" target="_blank">Learning Assistant Program</a>.</p>
+            </div>
+            <div class="leadership-role">
+                <h5><i class="fa fa-chart-line" aria-hidden="true"></i> ACM SIG Data Science Lead</h5>
+                <p>Creating and leading workshops focused on Data Science, guiding and interacting with students to foster their enthusiasm and skills in the field. Follow UC Merced ACM on <a href="https://www.instagram.com/ucmacm/" target="_blank">Instagram</a>.</p>
+            </div>
+        </div>
+
+
+        <div id="awards" class="section-divider">
+            <h4>Awards</h4>
+            <p>
+                <a href="https://appliedmath.ucmerced.edu/content/ronald-nap" target="_blank">Outstanding Undergraduate Student in Applied Mathematics, 2024</a>
+            </p>
+        </div>   
+
+
+        <div id="schedule">
+            <h4>Schedule</h4>
+            <p>
+
+            <iframe 
+                src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FLos_Angeles&amp;src=your-calendar-id&amp;color=%23D50000&amp;mode=week&amp;showTitle=0&amp;showNav=1&amp;showCalendars=0" 
+                style="border:solid 1px #777" 
+                width="900" 
+                height="450" 
+                frameborder="0" 
+                scrolling="no">
+            </iframe>
+            <p>
+
+        </div>   
+
+
+    </div>
+    
+    <footer>
+        <p>Page was last updated on <span id="last-updated"></span>.</p>
+    </footer>
+
+    <script src="./MySmile/smile.js"></script>
+    <script>
+
+
+        function updateGridColors(chart, mode) {
+            const isDarkMode = mode === 'dark';
+            chart.options.scales.r.grid.color = isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.1)';
+            chart.options.scales.r.pointLabels.color = isDarkMode ? '#fff' : '#000';
+            chart.update();
+        }
+    
+
+        function updateProgressScroller() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById("progress-bar");
+            if (progressBar) {
+                progressBar.style.height = scrolled + "%";
+            }
+            const sectionLinks = document.querySelectorAll("#progress-sections a");
+            sectionLinks.forEach((link) => {
+                const section = document.querySelector(link.getAttribute("href"));
+                const sectionTop = section.offsetTop - window.innerHeight / 2; 
+                const sectionHeight = section.offsetHeight;
+                if (winScroll >= sectionTop && winScroll < sectionTop + sectionHeight) {
+                link.classList.add("current");
+                } else {
+                link.classList.remove("current");
+                }
+            });
+        }
+        window.addEventListener("scroll", updateProgressScroller);
+        document.addEventListener('DOMContentLoaded', updateProgressScroller);
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var today = new Date();
+            document.getElementById('last-updated').textContent = today.toLocaleDateString();
+    
+            var ctx = document.getElementById('skillsChart').getContext('2d');
+            var skillsChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Data Analysis', 'Machine Learning', 'Programming', 'Mathematics', 'Statistics', 'Communication', 'Databases'],
+                    datasets: [{
+                        label: 'My Skills',
+                        data: [80, 90, 80, 90, 80, 85, 75],
+                        backgroundColor: 'rgba(123, 239, 178, 0.2)',
+                        borderColor: 'rgba(123, 239, 178, 1)',
+                        pointBackgroundColor: 'rgba(123, 239, 178, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(123, 239, 178, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)' 
+                            },
+                            pointLabels: {
+                                color: '#000' 
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false 
+                        }
+                    }
+                }
+            });    
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            updateGridColors(skillsChart, 'dark');
+        }
+
+        const themeToggleButton = document.getElementById('theme-toggle');
+        themeToggleButton.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const newTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            updateGridColors(skillsChart, newTheme);
+        });
+        });
+    </script>
+</body>
+</html>
