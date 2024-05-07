@@ -9,13 +9,9 @@ section p {
     color: #666;
 }
 
-.fa-twitter, .fa-linkedin, .fa-github, .fa-google {
+.fa-linkedin, .fa-github {
     color: #333;
     margin-right: 10px;
-}
-
-.fa-twitter:hover {
-    color: #1DA1F2;
 }
 
 .fa-linkedin:hover {
@@ -26,21 +22,15 @@ section p {
     color: #333;
 }
 
-.fa-google:hover {
-    color: #DB4437;
-}
-
 .no-outline:focus, .no-outline:active {
     outline: none;
 }
-
 
 @media (max-width: 767px) {
     .container {
         width: 95%;
     }
 } */
-
 
 body, html {
     margin: 0;
@@ -146,12 +136,6 @@ hr {
     }
 }
 
-
-
-
-
-
-
 #projects {
     margin-bottom: 50px;
 }
@@ -192,8 +176,11 @@ hr {
     line-height: 1.6;
 }
 
-
-
+.button, .button:visited, .button:hover {
+    color: #3b82f6;
+    background-color: transparent; 
+    border-color: #3b82f6; 
+}
 
 .leadership-role {
     margin-bottom: 20px;
@@ -224,10 +211,6 @@ hr {
     text-decoration: underline;
 }
 
-
-
-
-
 .tech-button:hover {
     background-color: #dbeafe; 
     color: #1d4ed8; 
@@ -246,10 +229,6 @@ hr {
     transition: background-color 0.3s, color 0.3s; 
     display: inline-block; 
 }
-
-
-
-
 
 .experience-role {
     display: flex;
@@ -282,12 +261,6 @@ hr {
     padding-left: 20px; 
 }
 
-
-
-
-
-
-
 .box {
     background-color: #f9f9f9; 
     border-radius: 10px; 
@@ -301,9 +274,6 @@ hr {
     margin-bottom: 20px; 
     border-bottom: 1px solid #e1e1e1; 
 }
-
-
-
 
 .dark-mode {
     background-color: #121212;
@@ -319,17 +289,34 @@ hr {
     margin-top: 10px; 
   }
   
-
 body.dark-mode {
     color: #E0E0E0; 
 }
 
-body.dark-mode h1, body.dark-mode p, body.dark-mode a, body.dark-mode h4 {
+.dark-mode a, .dark-mode a:visited, .dark-mode a:hover {
+    color: #3b82f6;
+}
+
+.dark-mode .button, .dark-mode .button:visited, .dark-mode .button:hover {
+    color: #3b82f6;
+    background-color: transparent; 
+    border-color: #3b82f6; 
+}
+
+body.dark-mode h1, body.dark-mode p, body.dark-mode h4 {
+    color: #FFFFFF;
+}
+
+body.dark-mode nav.navbar a, body.dark-mode footer {
     color: #FFFFFF; 
 }
 
-body.dark-mode nav.navbar a {
-    color: #FFFFFF; 
+.dark-mode .project-description, .dark-mode {
+    color: #666; 
+  }
+
+.dark-mode .fa-github, .dark-mode .fa-linkedin  {
+    color: #ffffff; 
 }
 
 body.dark-mode .toggle-button {
@@ -337,69 +324,3 @@ body.dark-mode .toggle-button {
     color: #FFF; 
     border-color: #FFF; 
 }
-
-.dark-mode .project-description, .dark-mode {
-    color: #666; 
-  }
-  
-  .dark-mode .project-box {
-    background-color: #fff; 
-  }
-  
-
-
-
-  
-  #progress-scroller {
-    position: fixed;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1000;
-  }
-  
-  #progress-bar {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff; 
-    width: 4px;
-    height: 0; 
-  }
-  
-  #progress-sections {
-    position: fixed;
-    left: 34px; 
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 0;
-    list-style: none;
-    z-index: 10; 
-  }
-  
-  #progress-sections a {
-    color: #fff; 
-    background-color: rgba(0, 0, 0, 0.8); 
-    padding: 4px 8px; 
-    border-radius: 4px; 
-    text-decoration: none;
-    font-size: 16px;
-    transition: color 0.3s, background-color 0.3s;
-  }
-  
-  #progress-sections a:hover {
-    color: #000; 
-    background-color: #fff; 
-  }
-  
-  #progress-sections a.current {
-    font-weight: bold;
-    color: #000; 
-    background-color: #fff; 
-  }
-  
