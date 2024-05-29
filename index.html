@@ -5,7 +5,6 @@
     <title>Ronald Nap | Home</title>
     <meta name="description" content="Homepage of Ronald Nap">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="icon.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,300,600">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
@@ -20,12 +19,12 @@
         <section class="header">
             <div class="row">
                 <div class="three columns">
-                    <a href="/"><img class="u-max-full-width" src='images/profile.jpeg'></a>
+                    <a href="/"><img class="u-max-full-width" src='images/grad.jpeg'></a>
                 </div>
                 <div class="five columns">
                     <h1>Ronald Nap</h1>
-                    <p>Undergraduate @ Dept. of Applied Math</p>
-                    <p>University of California, Merced</p>
+                    <p>Incoming MIDS student</p>
+                    <p>University of California, Berkeley</p>
                     <p>ronaldnap17 [AT] gmail.com</p>
                     <p>
                         <a href="https://www.linkedin.com/in/ronaldnap" target="_blank"><i class="fab fa-linkedin"></i></a>
@@ -43,7 +42,7 @@
         <nav class="navbar">
             <ul>
                 <li><a href="#bio">Bio</a></li>
-                <li><a href="https://napronald.github.io/Resume.pdf" target="_blank">CV</a></li>
+                <li><a href="https://napronald.github.io/Resume.pdf" target="_blank">Resume/CV</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#leadership">Leadership</a></li>
@@ -53,10 +52,9 @@
         <div id="bio" class="section-divider">
             <h4>Bio</h4>
             <p>
-                I am an undergraduate student studying Applied Math at UC Merced, where I am fortunate to be advised by <a href="https://faculty.ucmerced.edu/rmarcia/index.html" target="_blank">Professor Roummel Marcia</a>. My interests lie in developing and evaluating machine learning models that pinpoint predictive variables for key insights.
-            </p>
+                I am an incoming master's student studying <a href="https://ischoolonline.berkeley.edu/mids-atf/" target="_blank">Data Science</a> at UC Berkeley. During my undergraduate studies, I majored in Applied Math at UC Merced, where I was fortunate to be advised by <a href="https://faculty.ucmerced.edu/rmarcia/index.html" target="_blank">Professor Roummel Marcia</a>. My research focused on applying deep learning to medical imaging, sparking my interest in computer vision and machine learning.</p>
             <p>
-                I am actively seeking a summer internship in data science or machine learning. My background includes hands-on experience in training, evaluating, and optimizing models. I am particularly keen on exploring innovative applications of machine learning across various industries. I eagerly anticipate contributing to the data-driven sector, networking with industry professionals, and discovering the expansive potential of data science!
+                Currently, I am actively seeking summer and fall internships in data science or machine learning. My background includes hands-on experience in training, evaluating, and optimizing models. I am particularly keen on exploring innovative applications of machine learning across various industries. I eagerly anticipate contributing to the data-driven sector, networking with industry professionals, and discovering the expansive potential of data science!
             </p>
         </div>
 
@@ -77,7 +75,7 @@
                     <span class="tech-stack" style="margin-bottom: 0.75em;">LaTeX</span>
                     <p class="project-description">This project focuses on advancing machine learning methods to analyze whole slide imaging (WSI) data for gastrointestinal cancer classification. Specifically, self-supervised learning and multiple-instance learning are employed to perform weakly supervised classification.</p>
                     <div class="project-links">
-                        <a class="button" href="#">Arxiv</a>
+                        <a class="button" href="https://napronald.github.io/EMBC24.pdf">Paper</a>
                         <a class="button" href="https://github.com/napronald/GI-Cancer-MSI-CCNet-MIL">Code</a>
                     </div>
                 </div>
@@ -157,7 +155,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="project box">
                 <div class="project-details">
                     <h5>See More Projects</h5>
@@ -167,7 +165,7 @@
                     </div>
                 </div>
             </div>
-
+            
         </div>
 
         <div id="experience" class="section-divider">
@@ -178,7 +176,7 @@
                     <img src="images/ucm.jpeg" alt="Optimization Group Logo" class="experience-logo">
                     <div class="experience-details">
                         <h5>Computational Optimization Group - Undergraduate Researcher</h5>
-                        <p>February 2023 - Present, CA, Merced</p>
+                        <p>February 2023 - May 2024, CA, Merced</p>
                         <ul>
                             <li>Developed a two-stage weakly supervised framework for predicting Tumor Microsatellite Instability using Contrastive Learning and Multiple Instance Learning.</li>
                             <li>Achieved a 0.02 increase in AUROC, surpassing previous state-of-the-art methods. Accepted for publication at IEEE EMBC 2024.</li>
@@ -237,7 +235,7 @@
         </div>
         </div>
     <footer>
-        <p>Page was last updated on May 6, 2024.</p>
+        <p>Page was last updated on May 29, 2024.</p>
     </footer>    
 
     <script>
@@ -249,7 +247,7 @@
                     labels: ['Data Analysis', 'Machine Learning', 'Programming', 'Mathematics', 'Statistics', 'Communication', 'Databases'],
                     datasets: [{
                         label: 'My Skills',
-                        data: [80, 90, 80, 90, 80, 85, 75],
+                        data: [80, 90, 85, 90, 80, 85, 75],
                         backgroundColor: 'rgba(123, 239, 178, 0.2)',
                         borderColor: 'rgba(123, 239, 178, 1)',
                         pointBackgroundColor: 'rgba(123, 239, 178, 1)',
@@ -277,7 +275,7 @@
                 chart.options.scales.r.pointLabels.color = isDarkMode ? '#fff' : '#000';
                 chart.update();
             }
-    
+
             function setDefaultTheme() {
                 const currentTheme = localStorage.getItem('theme');
                 if (!currentTheme || currentTheme === 'dark') {
