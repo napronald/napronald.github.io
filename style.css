@@ -179,9 +179,6 @@ main {
 
 
 
-
-
-
 /* Projects ----------------------------------------------------  */
 
 .container {
@@ -291,8 +288,6 @@ main {
 
 
 
-
-
 /* Light Switch ----------------------------------------------------  */
 
 #themeswitch {
@@ -387,31 +382,31 @@ main {
 #timeline {
     font-size: 20px;
     font-weight: 300;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
 }
 
-@media (min-width: 768px) {
-    .timelineitem:nth-child(odd) {
-        margin-left: 50%;
-        border-left: 5px solid #333;
-        text-align: left;
-    }
-    .timelineitem:nth-child(even) {
-        margin-right: 50%;
-        border-right: 5px solid #333;
-        text-align: right;
-        margin-left: -4.15%;
-    }
-    .timelineitem {
-        width: 50%;
-        position: relative;
-        padding: 20px;
-    }
-    .timelineitem:nth-child(odd)::before {
-        left: -8px;
-    }
-    .timelineitem:nth-child(even)::before {
-        right: -8px;
-    }
+.timelineitem {
+    width: 50%;
+    position: relative;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.timelineitem:nth-child(odd) {
+    margin-left: 50%;
+    padding-left: 40px;
+    border-left: 5px solid #333;
+    text-align: left;
+}
+
+.timelineitem:nth-child(even) {
+    margin-right: 50%;
+    padding-right: 40px;
+    border-right: 5px solid #333;
+    text-align: right;
+    transform: translateX(1.05%);
 }
 
 .timelineitem::before {
@@ -421,53 +416,103 @@ main {
     content: "";
     display: block;
     position: absolute;
-    top: 0;
-    border-radius: 5px;
+    top: 40px;
+    border-radius: 50%;
 }
 
-@media (max-width: 768px) {
-    .timelineitem {
-        border-left: 5px solid #333;
-        text-align: left;
-        margin-left: 10px;
-        padding: 5px;
-        position: relative;
-    }
-    .timelineitem::before {
-        left: -8px;
-    }
+.timelineitem:nth-child(odd)::before {
+    left: -8px;
+}
+
+.timelineitem:nth-child(even)::before {
+    right: -8px;
 }
 
 .tdate {
     font-size: 18px;
-    font-weight: 400;
-    margin-bottom: -5px;
-    color: rgb(74, 100, 185);
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #6682B6;
 }
+
 .ttitle {
-    font-size: 20px;
-    font-weight: 400;
-}
-.tdesc {
     font-size: 18px;
+    font-weight: 600;
+}
+
+.tdesc {
+    font-size: 13.5px;
     font-weight: 300;
 }
-@media (max-width: 768px) {
-    .tdate {
-        font-size: 16px;
-    }
-    .ttitle {
-        font-size: 16px;
-    }
-    .tdesc {
-        font-size: 16px;
-    }
-}
+
 .thigh {
-    color: #000266;
+    font-weight: 550;
+    font-size: 16px;
+    color: #5C706B;
+}
+
+.timeline-valeo {
+    position: absolute;
+    width: 300px;
+    height: 170px;
+    transform: translateY(-15%);
+    right: 100%;
+    margin-right: 20px;
+}
+
+.timeline-lab {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    transform: translateX(20%);
+    margin-top: -17.5%;
+
+}
+
+.timeline-stem {
+    position: absolute;
+    width: 250px;
+    height: 200px;
+    transform: translateX(-20%);
+    margin-top: -12.5%;
+    right: 100%;
+    margin-left: 20px;
+}
+
+.timeline-siam {
+    position: absolute;
+    width: 300px;
+    height: 250px;
+    transform: translateX(30%);
+    margin-top: -20%;
+}
+
+.timeline-acm {
+    position: absolute;
+    width: 425px;
+    height: 150px;
+    transform: translateX(-115%);
+    margin-top: -7.5%;
+}
+
+.timeline-llnl {
+    position: absolute;
+    width: 425px;
+    height: 150px;
+    transform: translateX(17.5%);
+    margin-top: -7.5%;
+}
+
+.timeline-suri {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    transform: translateX(-225%);
+    margin-top: -7.5%;
 }
 
 /* Timeline ----------------------------------------------------  */
+
 
 
 
@@ -714,7 +759,7 @@ main {
 
 .footer {
     text-align: center;
-    padding: 10px 0;
+    padding: 20px 0;
     color: #333;
     font-size: 0.9rem;
     position: relative;
