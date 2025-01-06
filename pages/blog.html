@@ -6,6 +6,100 @@
     <link rel="stylesheet" href="../style.css" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    .coming-soon {
+        text-align: center;
+        padding: 50px 20px;
+        color: #333;
+        font-family: Arial, sans-serif;
+    }
+
+    .coming-soon h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+    }
+
+    .coming-soon p {
+        font-size: 1.5rem;
+    }
+
+    .new-posts {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .new-posts h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #ffffff;
+    }
+
+    .posts-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .post-link {
+        text-decoration: none;
+    }
+
+    .post-card {
+        background-color: #1E1E1E; 
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .post-card:hover {
+        transform: scale(1.01);
+        background-color: #292929; 
+    }
+
+    .post-content {
+        padding: 20px;
+    }
+
+    .post-content h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ffffff; 
+        margin-bottom: 10px;
+    }
+
+    .post-meta {
+        display: flex;
+        gap: 10px;
+        font-size: 0.875rem;
+        color: #BBBBBB; 
+        margin-bottom: 15px;
+    }
+
+    .post-description {
+        font-size: 1rem;
+        color: #DDDDDD;
+        margin-bottom: 15px;
+    }
+
+    .post-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .post-tags li {
+        background-color: #333333; 
+        color: #FFFFFF; 
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        list-style: none;
+    }
+    </style>
 </head>
 <body>
     <main>
@@ -25,13 +119,10 @@
             <a href="./about.html" class="nav-button">About Me</a>
         </nav>
     </nav>
-
     <section class="coming-soon">
         <h1>Coming Soon</h1>
         <p>Stay tuned! This page is under construction and will be available soon.</p>
     </section>
-
-
     <section class="new-posts">
         <div class="posts-container">
             <a href="./blog.html" class="post-link">
@@ -82,8 +173,8 @@
     </section>
     </main> 
     <footer style="margin-top: 50px;" class="footer">
-        <p>© 2024 All Rights Reserved</p>
+        <p>© 2025 All Rights Reserved</p>
         <p>Made with ☕ by Ronald Nap</p>
-    </footer>   
+    </footer>    
 </body>
 </html>
