@@ -1,139 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ronald Nap</title>
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ronald Nap - Projects</title>
+
+  <link rel="stylesheet" href="../style.css" />
+
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    .content-wrapper {
+      width: min(90%, 1000px);
+      margin: 0 auto; 
+      padding-bottom: 3rem; 
+    }
+
+    #skills {
+      margin-top: 1.5rem;
+      margin-bottom: 1rem; 
+    }
+    #skills p {
+      line-height: 1.6;
+    }
+
+    .view-more {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .view-more a {
+      color: #3f3f46;
+      text-decoration: none;
+      font-weight: 1000;
+    }
+
+    .view-more a:hover {
+      text-decoration: underline;
+      color: #bc9b6a;
+    }
+
+    .view-more a::before {
+      content: "\f09b";
+      font-family: "FontAwesome";
+      margin-right: 0.25rem;
+    }
+
+    #projects h1 {
+      margin-bottom: 1.2rem; 
+    }
+
+    .project {
+      display: flex;
+      flex-wrap: wrap;  
+      margin-bottom: 2.5rem; 
+      background: transparent; 
+      box-shadow: none;      
+      border: none;           
+      padding: 0;              
+    }
+
+    .project-image {
+      max-width: 400px;
+      width: 100%;
+      margin-right: 2rem;
+      border: none;        
+      padding: 0;          
+      border-radius: 0;    
+    }
+
+    .project-details {
+      flex: 1;         
+      min-width: 220px;
+      padding: 0;      
+      border: none;   
+    }
+
+    .project-details h2 {
+      margin-top: 0;   
+      margin-bottom: 0.75rem;
+    }
+
+    .project-details p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .project-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem; 
+    }
+
+    .project-buttons a.btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      color: #fff;           
+      background-color: #3f3f46;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .project-buttons a.btn:hover {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .project {
+        flex-direction: column;
+      }
+      .project-image {
+        margin: 0 0 1rem 0;
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-
-    <main>
+  <main>
     <nav class="horiz sb">
-        <div class="horiz js">
-            <a href="../index.html">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <title>Home</title>
-                    <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
-                </svg>
-            </a>
-        </div>
-        <nav class="navbar">
-            <a href="./projects.html" class="nav-button">Projects</a>
-            <a href="./experience.html" class="nav-button">Experience</a>
-            <a href="./blog.html" class="nav-button">Blog</a>
-            <a href="./about.html" class="nav-button">About Me</a>
-        </nav>
+      <div class="horiz js">
+        <a href="../index.html">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>Home</title>
+            <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+          </svg>
+        </a>
+      </div>
+      <nav class="navbar">
+        <a href="./projects.html" class="nav-button active">Projects</a>
+        <a href="./experience.html" class="nav-button">Experience</a>
+        <a href="./blog.html" class="nav-button">Blog</a>
+        <a href="./about.html" class="nav-button">About Me</a>
+      </nav>
     </nav>
-    
-        <section style="margin-left: 30px; margin-top: -10px;" class="content-section">
-            <div class="container">
-                <div class="row justify-content-center px-3 px-md-5">
-                    <div class="col-md-6 my-3">
-                        <div class="card my-3 h-100" title="Contrastive Pre-Training and Multiple Instance Learning for Predicting Tumor Microsatellite Instability">
-                            <div class="card-head">
-                                <img class="card-img-top" src="../images/CCNet.jpeg" alt="Contrastive Pre-Training and Multiple Instance Learning for Predicting Tumor Microsatellite Instability">
-                            </div>
-                            <div class="card-body bg-transparent p-3">
-                                <div class="pb-2 bg-transparent">
-                                    <span class="badge badge-secondary">Python</span>
-                                    <span class="badge badge-secondary">PyTorch</span>
-                                    <span class="badge badge-secondary">SciKit</span>
-                                    <span class="badge badge-secondary">SLURM</span>
-                                    <span class="badge badge-secondary">LaTeX</span>
-                                </div>
-                                <h5 class="card-title bg-transparent mt-1">Contrastive Pre-Training and Multiple Instance Learning for Predicting Tumor Microsatellite Instability</h5>
-                                <div class="card-text bg-transparent secondary-font">
-                                    This project focuses on advancing machine learning methods to analyze whole slide imaging (WSI) data for gastrointestinal cancer classification. Specifically, self-supervised learning and multiple-instance learning are employed to perform weakly supervised classification.
-                                </div>
-                            </div>
-                            <div class="card-footer py-3">
-                                <span class="m-1 mx-2">
-                                    <a href="https://napronald.github.io/documents/EMBC24.pdf" target="_blank" class="btn btn-primary btn-sm">Paper</a>
-                                    <a href="https://github.com/napronald/GI-Cancer-MSI-CCNet-MIL" target="_blank" class="btn btn-primary btn-sm">Code</a>
-                                    <a href="https://napronald.github.io/documents/Slides.pdf" target="_blank" class="btn btn-primary btn-sm">Slides</a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="col-md-6 my-3">
-                        <div class="card my-3 h-100" title="Synthetic Data Generation for Deep Learning Model Enhancement">
-                            <div class="card-head">
-                                <img class="card-img-top" src="../images/WGAN.jpeg" alt="Synthetic Data Generation for Deep Learning Model Enhancement">
-                            </div>
-                            <div class="card-body bg-transparent p-3">
-                                <div class="pb-2 bg-transparent">
-                                    <span class="badge badge-secondary">Python</span>
-                                    <span class="badge badge-secondary">PyTorch</span>
-                                    <span class="badge badge-secondary">SciKit</span>
-                                    <span class="badge badge-secondary">AWS</span>
-                                    <span class="badge badge-secondary">Git</span>
-                                </div>
-                                <h5 class="card-title bg-transparent mt-1">Synthetic Data Generation for Deep Learning Model Enhancement</h5>
-                                <div class="card-text bg-transparent secondary-font">
-                                    This project focuses on enhancing an emotion recognition classifier by iteratively leveraging a Generative Adversarial Network to synthesize additional training data. Through this iterative process, the model aims to increase the accuracy of classifying emotions.
-                                </div>
-                            </div>
-                            <div class="card-footer py-3">
-                                <span class="m-1 mx-2">
-                                    <a href="https://github.com/napronald/Synthetic-Data-Generation-for-Deep-Learning-Model-Enhancement/blob/main/README.md" target="_blank" class="btn btn-primary btn-sm">Details</a>
-                                    <a href="https://github.com/napronald/Synthetic-Data-Generation-for-Deep-Learning-Model-Enhancement" target="_blank" class="btn btn-primary btn-sm">Code</a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="col-md-6 my-3">
-                        <div class="card my-3 h-100" title="DigitPro99 - Interactive Digit Classification Application">
-                            <div class="card-head">
-                                <img class="card-img-top" src="../images/digits.jpeg" alt="DigitPro99 - Interactive Digit Classification Application">
-                            </div>
-                            <div class="card-body bg-transparent p-3">
-                                <div class="pb-2 bg-transparent">
-                                    <span class="badge badge-secondary">Tensorflow</span>
-                                    <span class="badge badge-secondary">HTML</span>
-                                    <span class="badge badge-secondary">CSS</span>
-                                    <span class="badge badge-secondary">JavaScript</span>
-                                    <span class="badge badge-secondary">Firebase</span>
-                                </div>
-                                <h5 class="card-title bg-transparent mt-1">DigitPro99 - Interactive Digit Classification Application</h5>
-                                <div class="card-text bg-transparent secondary-font">
-                                    This project is dedicated to digit recognition. The goal is to develop a robust model capable of performing digit detection and the accurate classification of digits from 0 to 99 with plans to expand its capabilities in the future.
-                                </div>
-                            </div>
-                            <div class="card-footer py-3">
-                                <span class="m-1 mx-2">
-                                    <a href="https://napronald.github.io/DigitPro99/" target="_blank" class="btn btn-primary btn-sm">Demo</a>
-                                    <a href="https://github.com/napronald/DigitPro99" target="_blank" class="btn btn-primary btn-sm">Code</a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6 my-3">
-                        <div class="card my-3 h-100" title="See More Projects">
-                            <div class="card-details bg-transparent p-3">
-                                <h5 class="card-title bg-transparent mt-1">See More Projects</h5>
-                                <div class="card-text bg-transparent secondary-font">
-                                    Explore more projects on my GitHub profile.
-                                </div>
-                            </div>
-                            <div class="card-footer py-3">
-                                <span class="m-1 mx-2">
-                                    <a href="https://github.com/napronald" target="_blank" class="btn btn-primary btn-sm">GitHub Profile</a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="content-wrapper">
+      <section id="skills">
+        <p>
+          <strong>Programming Languages:</strong> Python, C++, JavaScript, SQL, R <br />
+          <strong>Frameworks:</strong> PyTorch, TensorFlow, Scikit-learn, NumPy, Pandas, OpenCV, Torchvision, Transformers <br />
+          <strong>Technologies:</strong> AWS (S3, ECS), Docker, ONNX, TensorRT, CUDA, SLURM, Conda, Linux, Spark <br />
+        </p>
+        <p class="view-more">
+            Visit my <a href="https://github.com/napronald" target="_blank" rel="noopener noreferrer">Github to view more of my projects</a>.
+        </p>
+      </section>
+      <section id="projects">
+        <div class="project">
+          <img 
+            src="../images/search.gif" 
+            alt="Project 1 Thumbnail" 
+            class="project-image" 
+          />
+          <div class="project-details">
+            <h2><span style="font-weight: bold; color: #007bff;">AI Paper Similarity Search App</span></h2>
+            <p>
+              A web app to help discover similar arXiv papers using fine-tuned <span style="font-weight: bold; color: #000000;">Sentence-BERT embeddings</span> trained on 2 million papers. Fully AI-powered search engine with <span style="font-weight: bold; color: #000000;">IndexedDB</span> for fast, serverless searches. Built using <span style="font-weight: bold; color: #000000;">Transformers.js</span> for efficient academic paper recommendations.
+            </p>
+            <div class="project-buttons">
+              <a href="https://napronald.github.io/AI-Paper-Similarity-Search-App/" class="btn">Live Demo</a>
+              <a href="https://github.com/napronald/AI-Paper-Similarity-Search-App" class="btn">View Code</a>
             </div>
-        </section>
-    </main>
-    <footer class="footer">
-        <p>© 2024 All Rights Reserved</p>
-        <p>Made with ☕ by Ronald Nap</p>
-    </footer>
+          </div>
+        </div>
+        <div class="project">
+          <img 
+            src="../images/digits.gif" 
+            alt="Project 2 Thumbnail" 
+            class="project-image" 
+          />
+          <div class="project-details">
+            <h2><span style="font-weight: bold; color: #007bff;">Digits Object Detection App</span></h2>
+            <p>
+              An interactive web app for real-time digit detection using <span style="font-weight: bold; color: #000000;">OpenCv.js</span> and a custom trained <span style="font-weight: bold; color: #000000;">YOLOv8</span> model. Fully optimized with <span style="font-weight: bold; color: #000000;">ONNX</span> for seamless and efficient digit recognition.
+            </p>
+            <div class="project-buttons">
+              <a href="https://napronald.github.io/Digits-Object-Detection-App/" class="btn">Live Demo</a>
+              <a href="https://github.com/napronald/Digits-Object-Detection-App" class="btn">View Code</a>
+            </div>
+          </div>
+        </div>
+        <div class="project">
+          <img 
+            src="../images/CCNet.jpeg" 
+            alt="Project 3 Thumbnail" 
+            class="project-image" 
+          />
+          <div class="project-details">
+            <h2><span style="font-weight: bold; color: #007bff;">Contrastive Pre-Training and Multiple Instance Learning for Predicting Tumor Microsatellite Instability</span></h2>
+            <p>
+              <a href="https://doi.org/10.1109/EMBC53108.2024.10782037" style="font-weight: bold; color: #000000;">DOI: 10.1109/EMBC53108.2024.10782037</a> <br />
+              Ronald Nap, Mohammed Aburidi, Roummel Marcia <br />
+              Engineering in Medicine and Biology Society (EMBC) 2024
+            </p>
+            <div class="project-buttons">
+              <a href="https://napronald.github.io/documents/EMBC24.pdf" class="btn">View Paper</a>
+              <a href="https://github.com/napronald/GI-Cancer-MSI-CCNet-MIL" class="btn">View Code</a>
+              <a href="https://napronald.github.io/documents/Slides.pdf" class="btn">View Slides</a>
+            </div>
+          </div>
+        </div>
+        <div class="project">
+          <img 
+            src="../images/WGAN.jpeg" 
+            alt="Project 3 Thumbnail" 
+            class="project-image" 
+          />
+          <div class="project-details">
+            <h2><span style="font-weight: bold; color: #007bff;">Synthetic Data Generation for Deep Learning Model Enhancement</span></h2>
+            <p>
+              A proof-of-concept research project leveraging <span style="font-weight: bold; color: #000000;">Generative Adversarial Networks</span> to generate synthetic data for improving classification performance. By iteratively refining images with a <span style="font-weight: bold; color: #000000;">CNN classifier</span>, the project enhances the accuracy and robustness of <span style="font-weight: bold; color: #000000;">emotion recognition</span>. The synthetic data supplements the limited dataset, effectively boosting model performance.
+            </p>
+            <div class="project-buttons">
+              <a href="https://github.com/napronald/Synthetic-Data-Generation-for-Deep-Learning-Model-Enhancement" class="btn">View Code</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="footer">
+    <p>© 2025 All Rights Reserved</p>
+    <p>Made with ☕ by Ronald Nap</p>
+  </footer>
 </body>
 </html>
