@@ -6,6 +6,12 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
+    .content-wrapper {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 100px;
+    }
+
     #timeline {
       font-size: 20px;
       font-weight: 300;
@@ -87,15 +93,14 @@
       width: 300px;
       height: 170px;
       transform: translateY(-15%);
-      right: 100%;
-      margin-right: 20px;
+      left: 115%;
     }
 
     .timeline-lab {
       position: absolute;
       width: 280px;
       height: 175px;
-      transform: translateX(30%);
+      transform: translateX(-140%);
       margin-top: -3.5%;
     }
 
@@ -103,17 +108,15 @@
       position: absolute;
       width: 250px;
       height: 200px;
-      transform: translateX(-20%);
+      transform: translateX(60%);
       margin-top: -12.5%;
-      right: 100%;
-      margin-left: 20px;
     }
 
     .timeline-siam {
       position: absolute;
       width: 300px;
       height: 250px;
-      transform: translateX(30%);
+      transform: translateX(-130%);
       margin-top: -20%;
     }
 
@@ -121,7 +124,7 @@
       position: absolute;
       width: 425px;
       height: 150px;
-      transform: translateX(-115%);
+      transform: translateX(30%);
       margin-top: -7.5%;
     }
 
@@ -129,7 +132,7 @@
       position: absolute;
       width: 425px;
       height: 150px;
-      transform: translateX(17.5%);
+      transform: translateX(-115%);
       margin-top: -7.5%;
     }
 
@@ -137,8 +140,16 @@
       position: absolute;
       width: 150px;
       height: 150px;
-      transform: translateX(-225%);
+      transform: translateX(135%);
       margin-top: -7.5%;
+    }
+
+    .timeline-amd {
+      position: absolute;
+      width: 320px;
+      height: 80px;
+      right: 105%;
+      margin-right: 20px;
     }
 
     @media (max-width: 768px) {
@@ -159,13 +170,15 @@
         right: auto !important;
       }
 
+      .timeline-MS,
       .timeline-valeo,
       .timeline-lab,
       .timeline-stem,
       .timeline-siam,
       .timeline-acm,
       .timeline-llnl,
-      .timeline-suri {
+      .timeline-suri,
+      .timeline-amd {
         position: static !important;
         width: 80% !important; 
         max-width: 300px;       
@@ -195,17 +208,37 @@
         <a href="./projects.html" class="nav-button">Projects</a>
         <a href="./experience.html" class="nav-button">Experience</a>
         <a href="./blog.html" class="nav-button">Blog</a>
-        <a href="./about.html" class="nav-button">About Me</a>
+        <a href="./about.html" class="nav-button">About</a>
       </nav>
     </nav>
-    <section class="content-section" style="margin-top: 20px;">
+    <div class="content-wrapper" style="margin-bottom: -5px; margin-top: -10px;" id="resume-link">
+      <p class="view-more">
+        You can check out <u><a href="https://napronald.github.io/documents/Resume.pdf" target="_blank"><i class="fa fa-arrow-right"></i> my resume here</a></u> <strong>(Last updated March 2025).</strong>
+      </p>
+    </div>
+    <section class="content-section" style="margin-bottom: 0; margin-top: -20px;">
       <div class="container">
         <div id="timeline">
           <div class="timelineitem">
-            <img src="../images/valeo.jpeg" alt="Valeo" class="timeline-valeo">
-            <div class="tdate">July 2024 - Present</div>
+            <img src="../images/amd.jpeg" alt="AMD" class="timeline-amd">
+            <div class="tdate">May 2025 - August 2025</div>
             <div class="ttitle">
-              Machine Learning Engineer Intern @
+              Incoming Machine Learning Intern @
+              <a href="https://www.amd.com/en.html" target="_blank" style="color: #ED1C24; font-weight: bold;">
+                AMD
+              </a>
+            </div>
+            <div class="tdesc">
+              <a href="https://www.amd.com/en.html" target="_blank" style="color: #ED1C24; font-weight: bold;">
+                Advanced Micro Devices
+              </a>, San Jose, CA
+            </div>
+          </div>
+          <div class="timelineitem">
+            <img src="../images/valeo.jpeg" alt="Valeo" class="timeline-valeo">
+            <div class="tdate">July 2024 - May 2025</div>
+            <div class="ttitle">
+              Machine Learning Software Engineer Intern @
               <a href="https://www.valeo.com" target="_blank" style="color: #82e601; font-weight: bold;">
                 Valeo
               </a>
@@ -314,7 +347,7 @@
             <img src="../images/suri.jpeg" alt="SURI" class="timeline-suri">
             <div class="tdate">June 2023 - August 2023</div>
             <div class="ttitle">
-                Machine Learning Researcher @
+              Machine Learning Researcher @
               <a href="https://uroc.ucmerced.edu/suri" target="_blank" style="color: #f6d046; font-weight: bold;">
                 SURI
               </a>
