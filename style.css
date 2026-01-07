@@ -591,3 +591,696 @@ header.hero p {
   transform: translateX(2px);
   transition: transform .15s ease;
 }
+
+
+
+
+
+
+
+
+
+/* ---------- Blog layout ---------- */
+.docker-shell{
+  margin-top: 1rem;
+  border-radius: 14px;
+  background: transparent;
+  padding: 0;
+}
+
+/* hide radios */
+.docker-radio{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Toolbar */
+.docker-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 1rem;
+  margin-bottom: .65rem;
+}
+
+.docker-tabs{
+  display:inline-flex;
+  gap: .5rem;
+  padding: .25rem;
+  border-radius: 999px;
+  background: rgba(120,161,229,0.10);
+}
+
+.docker-tab{
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color .15s ease, color .15s ease;
+}
+
+.docker-tab:hover{ background: rgba(120,161,229,0.14); }
+
+.docker-filename{
+  font-weight: 700;
+  font-size: .92rem;
+  opacity: .65;
+}
+
+/* Active tab styling */
+#docker-tab-single:checked ~ .docker-toolbar .docker-tab-single{
+  background: #78a1e5;
+  color: #fff;
+}
+#docker-tab-multi:checked ~ .docker-toolbar .docker-tab-multi{
+  background: #78a1e5;
+  color: #fff;
+}
+
+/* Panels */
+.docker-panel{ display:none; margin:0; }
+#docker-tab-single:checked ~ .docker-viewport .docker-panel-single{ display:block; }
+#docker-tab-multi:checked  ~ .docker-viewport .docker-panel-multi{ display:block; }
+
+/* Editor */
+.docker-viewport{
+  max-height: 360px;
+  overflow: auto;
+  border-radius: 14px;
+  background: #1e1e1e;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.10);
+}
+
+.docker-editor{
+  background: transparent;
+  padding: 0;
+}
+
+.docker-editor code{
+  display:block;
+  padding: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* smaller, readable editor-like sizing */
+  font-size: 0.78rem;     /* tweak: 0.74–0.82 */
+  line-height: 1.35;
+
+  color: #e8e8e8;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* Syntax colors */
+.lang-dockerfile .kw{ color:#78a1e5; font-weight: 800; }
+.lang-dockerfile .img{ color:#ffcc4d; }
+.lang-dockerfile .flag{ color:#9cdcfe; }
+.lang-dockerfile .arg{ color:#d4d4d4; }
+.lang-dockerfile .pkg{ color:#c586c0; }
+.lang-dockerfile .path{ color:#ce9178; }
+.lang-dockerfile .str{ color:#6a9955; }
+.lang-dockerfile .num{ color:#b5cea8; }
+.lang-dockerfile .op{ color:#d4d4d4; opacity:.85; }
+
+/* Scrollbar */
+.docker-viewport::-webkit-scrollbar{ width: 10px; height: 10px; }
+.docker-viewport::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+}
+.docker-viewport::-webkit-scrollbar-track{
+  background: rgba(0,0,0,0.12);
+}
+
+/* Code */
+
+.infra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* .code-block {
+  padding: 1rem 1.25rem;
+  overflow-x: auto; 
+} */
+
+.blog-section code {
+  font-size: 1.0rem;
+}
+/* ✅ Standalone code blocks (curl, JSON output, etc.) */
+.code-block {
+  margin: 0.9rem 0;
+  max-height: 290px;
+  overflow: auto;
+  border-radius: 14px;
+  background: #1e1e1e;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.10);
+}
+
+.code-block code{
+  display: block;
+  padding: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: #e8e8e8;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* Optional: match scrollbar styling */
+.code-block::-webkit-scrollbar{ width: 10px; height: 10px; }
+.code-block::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+}
+.code-block::-webkit-scrollbar-track{
+  background: rgba(0,0,0,0.12);
+}
+
+
+
+
+
+
+/* Keep labels compact + 1-line */
+.infra-tab{
+  white-space: nowrap;
+  font-size: .78rem;
+  padding: .38rem .65rem;
+}
+
+/* ===== Active tab styling (k6 block) ===== */
+#k6-script:checked ~ .infra-toolbar .infra-tab-k6-script,
+#k6-job:checked    ~ .infra-toolbar .infra-tab-k6-job{
+  background: #78a1e5;
+  color: #fff;
+}
+
+/* ===== Panels (k6 block) ===== */
+#k6-script:checked ~ .infra-viewport .infra-panel-k6-script{ display:block; }
+#k6-job:checked    ~ .infra-viewport .infra-panel-k6-job{ display:block; }
+
+/* ===== Active tab styling (obs block) ===== */
+#obs-telemetry:checked ~ .infra-toolbar .infra-tab-telemetry{
+  background: #78a1e5;
+  color: #fff;
+}
+
+/* ===== Panels (obs block) ===== */
+#obs-telemetry:checked ~ .infra-viewport .infra-panel-telemetry{ display:block; }
+
+/* keep generic hidden default */
+.infra-panel{ display:none; margin:0; }
+
+
+
+
+.infra-shell{
+  margin-top: 1rem;
+  border-radius: 14px;
+  background: transparent;
+  padding: 0;
+}
+
+.infra-radio{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.infra-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 1rem;
+  margin-bottom: .65rem;
+}
+
+.infra-tabs{
+  display:inline-flex;
+  gap: .4rem;
+  padding: .25rem;
+  border-radius: 999px;
+  background: rgba(120,161,229,0.10);
+  flex-wrap: nowrap;
+}
+
+.infra-tab{
+  padding: .38rem .65rem;     /* smaller pill */
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 1.00rem;          /* smaller text */
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color .15s ease, color .15s ease;
+
+  white-space: nowrap;         /* prevent wrap */
+}
+
+.infra-filename{
+  font-weight: 700;
+  font-size: 1.0rem;
+  opacity: .65;
+}
+
+.infra-tab:hover{ background: rgba(120,161,229,0.14); }
+
+#infra-tab-base:checked   ~ .infra-toolbar .infra-tab-base,
+#infra-tab-deploy:checked ~ .infra-toolbar .infra-tab-deploy,
+#infra-tab-prod:checked   ~ .infra-toolbar .infra-tab-prod,
+#infra-tab-vs:checked     ~ .infra-toolbar .infra-tab-vs{
+  background: #78a1e5;
+  color: #fff;
+}
+
+.infra-panel{ display:none; margin:0; }
+#infra-tab-base:checked   ~ .infra-viewport .infra-panel-base{ display:block; }
+#infra-tab-deploy:checked ~ .infra-viewport .infra-panel-deploy{ display:block; }
+#infra-tab-prod:checked   ~ .infra-viewport .infra-panel-prod{ display:block; }
+#infra-tab-vs:checked     ~ .infra-viewport .infra-panel-vs{ display:block; }
+
+.infra-viewport{
+  max-height: 360px;
+  overflow: auto;
+  border-radius: 14px;
+  background: #1e1e1e;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.10);
+}
+
+.infra-editor{
+  background: transparent;
+  padding: 0;
+}
+
+.infra-editor code{
+  display:block;
+  padding: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: #e8e8e8;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.lang-yaml .k{ color:#78a1e5; font-weight: 800; } 
+.lang-yaml .v{ color:#d4d4d4; }          
+.lang-yaml .s{ color:#6a9955; }              
+.lang-yaml .n{ color:#b5cea8; }             
+
+.infra-viewport::-webkit-scrollbar{ width: 10px; height: 10px; }
+.infra-viewport::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+}
+.infra-viewport::-webkit-scrollbar-track{
+  background: rgba(0,0,0,0.12);
+}
+/* ===== Active tab styling (BASE block) ===== */
+#infra-base-kustom:checked      ~ .infra-toolbar .infra-tab-kustom,
+#infra-base-api-deploy:checked  ~ .infra-toolbar .infra-tab-api-deploy,
+#infra-base-api-svc:checked     ~ .infra-toolbar .infra-tab-api-svc,
+#infra-base-redis-deploy:checked~ .infra-toolbar .infra-tab-redis-deploy,
+#infra-base-redis-svc:checked   ~ .infra-toolbar .infra-tab-redis-svc{
+  background: #78a1e5;
+  color: #fff;
+}
+
+/* ===== Panels (BASE block) ===== */
+#infra-base-kustom:checked       ~ .infra-viewport .infra-panel-kustom{ display:block; }
+#infra-base-api-deploy:checked   ~ .infra-viewport .infra-panel-api-deploy{ display:block; }
+#infra-base-api-svc:checked      ~ .infra-viewport .infra-panel-api-svc{ display:block; }
+#infra-base-redis-deploy:checked ~ .infra-viewport .infra-panel-redis-deploy{ display:block; }
+#infra-base-redis-svc:checked    ~ .infra-viewport .infra-panel-redis-svc{ display:block; }
+
+
+/* ===== Active tab styling (PROD block) ===== */
+#infra-prod-kustom:checked ~ .infra-toolbar .infra-tab-kustom,
+#infra-prod-hpa:checked    ~ .infra-toolbar .infra-tab-hpa,
+#infra-prod-vs:checked     ~ .infra-toolbar .infra-tab-vs,
+#infra-prod-ns:checked     ~ .infra-toolbar .infra-tab-ns,
+#infra-prod-telemetry:checked ~ .infra-toolbar .infra-tab-telemetry{
+  background: #78a1e5;
+  color: #fff;
+}
+
+/* ===== Panels (PROD block) ===== */
+#infra-prod-kustom:checked ~ .infra-viewport .infra-panel-kustom{ display:block; }
+#infra-prod-hpa:checked    ~ .infra-viewport .infra-panel-hpa{ display:block; }
+#infra-prod-vs:checked     ~ .infra-viewport .infra-panel-vs{ display:block; }
+#infra-prod-ns:checked     ~ .infra-viewport .infra-panel-ns{ display:block; }
+#infra-prod-telemetry:checked ~ .infra-viewport .infra-panel-telemetry{ display:block; }
+
+/* keep the generic hidden default */
+.infra-panel{ display:none; margin:0; }
+
+
+
+.infra-tabs{
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;         /* Firefox */
+}
+
+.infra-tabs::-webkit-scrollbar{ display:none; }  /* Chrome/Safari */
+.infra-tab{ flex: 0 0 auto; }                    /* prevent shrinking weirdly */
+
+/* Optional: slightly tighter pills on small screens */
+@media (max-width: 520px){
+  .infra-toolbar{ gap: .6rem; }
+  .infra-tab{
+    font-size: .85rem;
+    padding: .34rem .58rem;
+  }
+  .infra-filename{ font-size: .9rem; }
+}
+
+
+
+
+
+  /* Full-width, one image per row */
+  .img-stack { margin-top: 1rem; }
+
+  .img-wide {
+    margin: 0 0 18px 0;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.18);
+  }
+
+  .img-wide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* keep your existing .img-cap if you already have it; included here for completeness */
+  .img-cap {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.82);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+
+
+
+
+.lang-js .kw{ color:#78a1e5; font-weight: 800; }  /* keywords */
+.lang-js .fn{ color:#dcdcaa; }                    /* function names */
+.lang-js .id{ color:#d4d4d4; }                    /* identifiers/default text */
+.lang-js .str{ color:#6a9955; }                   /* strings */
+.lang-js .num{ color:#b5cea8; }                   /* numbers */
+.lang-js .op{ color:#d4d4d4; opacity:.9; }        /* operators/punct */
+.lang-js .cm{ color:#6b7280; font-style: italic;} /* comments */
+.lang-js .prop{ color:#9cdcfe; }                  /* object keys / props */
+
+
+
+
+
+
+
+
+.blog-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.blog-header h1 {
+  font-size: 2.4rem;
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+}
+
+.blog-intro {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  max-width: 1000px;
+}
+
+.blog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.blog-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+/* Sections */
+
+.blog-section {
+  margin-top: 2.5rem;
+}
+
+.blog-section h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.blog-section h3 {
+  font-size: 1.2rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.blog-section p {
+  margin: 0.4rem 0;
+  font-size: 0.98rem;
+}
+
+/* Small caption text inside examples */
+.blog-caption {
+  margin-top: 0.1rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* Example containers */
+
+.blog-example {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+/* Two-column layout for lists, collapses on mobile */
+
+.blog-grid-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.blog-grid-two ul,
+.blog-grid-two ol {
+  padding-left: 1.25rem;
+  margin: 0.4rem 0;
+}
+
+/* Callouts */
+
+.callout {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border-left: 4px solid var(--accent);
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.callout strong {
+  margin-right: 0.35rem;
+}
+
+/* Optional variants if you want nuanced colors later */
+.callout-tip {
+  border-left-color: var(--accent);
+}
+
+.callout-warning {
+  border-left-color: #f4b400; /* Google yellow-ish vibe */
+}
+
+/* Blockquotes */
+
+blockquote {
+  margin: 1.25rem 0 0;
+  padding: 0.9rem 1.25rem;
+  border-left: 4px solid var(--accent);
+  background-color: #ffffff;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* Figures / images */
+
+.blog-figure {
+  margin: 1.25rem 0 0;
+}
+
+.blog-placeholder {
+  width: 100%;
+  border-radius: 10px;
+  background: repeating-linear-gradient(
+    45deg,
+    #e2e2e2,
+    #e2e2e2 8px,
+    #f5f5f5 8px,
+    #f5f5f5 16px
+  );
+  height: 220px;
+}
+
+.blog-figure figcaption {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+/* Color swatches */
+
+.swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.swatch-color {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.swatch-accent {
+  background-color: var(--accent);
+}
+
+.swatch-dark {
+  background-color: var(--dark);
+}
+
+.swatch-light {
+  background-color: var(--light);
+}
+
+.swatch-label {
+  font-size: 0.85rem;
+}
+
+/* Responsive tweaks */
+
+@media (max-width: 768px) {
+  .blog-wrapper {
+    padding: 1.5rem 1.25rem 3rem;
+  }
+
+  .blog-grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-header h1 {
+    font-size: 2rem;
+  }
+}
+
+
+
+/* Smooth scroll for in-page anchors */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------- Blog Table of Contents ---------- */
+
+.blog-toc {
+  margin: 1.5rem 0 2rem;
+}
+
+.blog-toc details {
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  padding: 0.75rem 1rem 0.9rem;
+}
+
+.blog-toc summary {
+  list-style: none;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--accent);
+}
+
+.blog-toc summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Little caret icon */
+.blog-toc summary::after {
+  content: "▾";
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.blog-toc details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.blog-toc ol {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.blog-toc li {
+  margin: 0.25rem 0;
+}
+
+.blog-toc a {
+  color: var(--dark);
+  text-decoration: none;
+}
+
+.blog-toc a:hover {
+  color: var(--accent);
+}
+
+.blog-section#docker .docker-editor code,
+.blog-section#docker .docker-editor code * {
+  font-size: 0.72rem;   /* tweak: 0.68–0.78 */
+  line-height: 1.32;
+}

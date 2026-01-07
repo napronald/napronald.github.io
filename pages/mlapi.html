@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Style Guide · Ronald Nap</title>
+  <link rel="icon" href="../images/rn.ico">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <nav class="main-nav">
+    <div class="nav-brand">
+      <a href="/index.html" class="nav-brand-link">
+        <img src="../images/initial.png" alt="Ronald Nap initial" class="nav-initial">
+      </a>
+      <div class="nav-text">
+        <span class="nav-name">Ronald Nap</span>
+        <span class="nav-tagline">Machine Learning Engineer</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html">Projects</a>
+      <a href="resume.html">Resume</a>
+    </div>
+  </nav>
+
+  <main class="blog-wrapper">
+    <header class="blog-header">
+      <h1>Full End-to-End Machine Learning API</h1>
+      <p>
+              <img src="https://user-images.githubusercontent.com/1393562/197941700-78283534-4e68-4429-bf94-dce7ab43a941.svg" width=7% alt="Hugging Face">
+              <img src="https://user-images.githubusercontent.com/1393562/190876627-da2d09cb-5ca0-4480-8eb8-830bdc0ddf64.svg" width=7% alt="Plus">
+              <img src="https://user-images.githubusercontent.com/1393562/190876570-16dff98d-ccea-4a57-86ef-a161539074d6.svg" width=7% alt="FastAPI">
+              <img src="https://user-images.githubusercontent.com/1393562/190876627-da2d09cb-5ca0-4480-8eb8-830bdc0ddf64.svg" width=7% alt="Plus">
+              <img src="https://user-images.githubusercontent.com/1393562/190876644-501591b7-809b-469f-b039-bb1a287ed36f.svg" width=7% alt="Redis">
+              <img src="https://user-images.githubusercontent.com/1393562/190876627-da2d09cb-5ca0-4480-8eb8-830bdc0ddf64.svg" width=7% alt="Plus">
+              <img src="https://user-images.githubusercontent.com/1393562/190876683-9c9d4f44-b9b2-46f0-a631-308e5a079847.svg" width=7% alt="Kubernetes">
+              <img src="https://user-images.githubusercontent.com/1393562/190876627-da2d09cb-5ca0-4480-8eb8-830bdc0ddf64.svg" width=7% alt="Plus">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" width=7% alt="AWS">
+              <img src="https://user-images.githubusercontent.com/1393562/190876627-da2d09cb-5ca0-4480-8eb8-830bdc0ddf64.svg" width=7% alt="Plus">
+              <img src="https://user-images.githubusercontent.com/1393562/197683208-7a531396-6cf2-4703-8037-26e29935fc1a.svg" width=7% alt="K6">
+              <img src="https://user-images.githubusercontent.com/1393562/190876627-da2d09cb-5ca0-4480-8eb8-830bdc0ddf64.svg" width=7% alt="Plus">
+              <img src="https://user-images.githubusercontent.com/1393562/197682977-ff2ffb72-cd96-4f92-94d9-2624e29098ee.svg" width=7% alt="Grafana">
+      </p>
+      
+      <p class="blog-intro">
+        In this project, I deploy a Hugging Face <a style="color: #ffcc4d; font-weight: bold;">DistilBERT</a> sentiment model behind a
+        <a style="color: #009688; font-weight: bold;">FastAPI</a> service, containerize 
+        it with <a style="color: #0db7ed; font-weight: bold;">Docker</a>,
+
+        run it on
+        <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> using <a style="color:#ff9900; font-weight:bold;">AWS EKS</a>,
+
+        add
+        <a style="color: #d82c20; font-weight: bold;">Redis</a>
+        caching, and validate behavior under load with
+        <a style="color: #7d64ff; font-weight: bold;">k6</a> +
+        <a style="color: #f46800; font-weight: bold;">Grafana</a>.
+      </p>
+        </div>
+        <p class="view-more">
+          You can check out the code to <a class="resume-link" href="https://napronald.github.io/" target="_blank" rel="noopener"><span>this project here</span></a>.
+        </p>
+      </div>
+
+<section class="blog-section" id="motivation">
+  <h2>Prototype vs Production</h2>
+
+  <p>
+    Prototypes are optimized for speed. With
+    <a style="color: #ffcc4d; font-weight: bold;">Hugging Face</a>,
+    you can load a pretrained model and run inference quickly. However,
+    in production, the problem shift from "does it work?" to "does it keep working?"
+  </p>
+
+  <p>
+    The first hurdle is reproducibility. Code that runs on your machine can break on another machine due to dependency issues.
+    <a style="color: #0db7ed; font-weight: bold;">Docker</a>
+    fixes this by packaging the API + model into a single artifact such that the service behaves the same everywhere.
+    After that comes reliability. Even a perfect container still needs an operator, something to restart failures, route traffic, and scale when usage spikes.
+    <a style="color: #326ce5; font-weight: bold;">Kubernetes</a>
+    provides that runtime layer, while
+    <a style="color: #009688; font-weight: bold;">FastAPI</a>
+    gives clients a stable interface through prediction endpoints.
+  </p>
+
+  <p>
+    Performance is usually the next pain point. If inputs repeat, re-running inference is wasted work.
+    <a style="color: #d82c20; font-weight: bold;">Redis</a>
+    adds a cache so repeated requests can return quickly and reduce compute load.
+    To simulate real-world behavior,
+    <a style="color: #7d64ff; font-weight: bold;">k6</a>
+    is used to apply controlled load, and
+    <a style="color: #f46800; font-weight: bold;">Grafana</a>
+    visualizes latency and throughput so performance shifts show up in metrics instead of surprises.
+  </p>
+</section>
+
+<section class="blog-section">
+  <h2>Model + API</h2>
+
+  <p>
+    The model used in this project is a Hugging Face <a style="color: #ffcc4d; font-weight: bold;">DistilBERT</a> sentiment classifier.
+    In this project, I fine-tuned the model and exported everything into a local
+    folder (<code>distilbert-base-uncased-finetuned-sst2/</code>), which includes the model weights (
+    <code>model.safetensors</code>, <code>pytorch_model.bin</code>) and the tokenizer/config artifacts
+    (<code>config.json</code>, <code>tokenizer.json</code>, <code>vocab.txt</code>). Altogether, the bundle is roughly
+    1GB, which is why packaging and deployment choices matter (more on this later).
+  </p>
+
+  <p>
+    I wrapped the model in a <a style="color: #009688; font-weight: bold;">FastAPI</a> service that exposes two main endpoints:
+  </p>
+
+  <ul>
+    <li><code>/project/health</code> - used for <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> readiness + liveness checks</li>
+    <li><code>/project/bulk-predict</code> - performs batched sentiment prediction</li>
+  </ul>
+
+  <p>
+    The API accepts an array of text strings and returns a JSON response with ranked sentiment labels and confidence scores,
+    designed to be easy to plug into downstream systems.
+  </p>
+
+<pre class="code-block"><code>curl http://localhost:8000/project/health
+
+{"status":"healthy"}</code></pre>
+
+<pre class="code-block"><code>curl -X POST "http://localhost:8000/project/bulk-predict" -H "Content-Type: application/json" \
+  -d '{"text":["i love this","this is bad"]}'
+
+{
+  "predictions": [
+    [
+      {"label": "POSITIVE", "score": 0.99},
+      {"label": "NEGATIVE", "score": 0.01}
+    ],
+    [
+      {"label": "NEGATIVE", "score": 0.98},
+      {"label": "POSITIVE", "score": 0.02}
+    ]
+  ]
+}</code></pre>
+</section>
+
+
+<section class="blog-section" id="docker">
+  <h2>Dockerizing the API + Model</h2>
+
+  <p>
+    A <strong>Dockerfile</strong> is the blueprint for building a container image: it defines the base runtime, what files get copied in,
+    and the commands needed to install dependencies and start the API. The main design choice is <strong>single-stage vs multi-stage</strong>.
+    A single-stage build is simpler because everything happens in one image, but it often ships extra build tools. A multi-stage build separates
+    "build/install" from "runtime": the <em>builder</em> stage installs heavy dependencies and creates the environment, then the <em>final</em>
+    stage copies in only what's needed to run the service usually producing a leaner runtime image.
+  </p>
+
+  <div class="docker-shell">
+    <input class="docker-radio" type="radio" name="docker-tab" id="docker-tab-single" checked>
+    <input class="docker-radio" type="radio" name="docker-tab" id="docker-tab-multi">
+
+    <div class="docker-toolbar">
+      <div class="docker-tabs" role="tablist" aria-label="Dockerfile versions">
+        <label class="docker-tab docker-tab-single" for="docker-tab-single" role="tab">Single-stage build</label>
+        <label class="docker-tab docker-tab-multi" for="docker-tab-multi" role="tab">Multi-stage build</label>
+      </div>
+      <div class="docker-filename">Dockerfile</div>
+    </div>
+
+    <div class="docker-viewport" aria-live="polite">
+      <pre class="docker-editor docker-panel docker-panel-single"><code class="lang-dockerfile"><span class="kw">FROM</span> <span class="img">python:3.11-slim</span>
+
+<span class="kw">RUN</span> <span class="arg">apt-get</span> <span class="arg">update</span> <span class="op">&amp;&amp;</span> <span class="arg">apt-get</span> <span class="arg">install</span> <span class="flag">-y</span> <span class="flag">--no-install-recommends</span> \
+  <span class="pkg">build-essential</span> \
+  <span class="pkg">libffi-dev</span> \
+  <span class="pkg">git</span> \
+  <span class="pkg">curl</span> <span class="op">&amp;&amp;</span> \
+  <span class="arg">rm</span> <span class="flag">-rf</span> <span class="path">/var/lib/apt/lists/*</span>
+
+<span class="kw">RUN</span> <span class="arg">pip</span> <span class="arg">install</span> <span class="flag">--no-cache-dir</span> <span class="pkg">poetry</span>
+
+<span class="kw">WORKDIR</span> <span class="path">/app</span>
+
+<span class="kw">COPY</span> <span class="path">pyproject.toml</span> <span class="path">poetry.lock</span> <span class="path">./</span>
+<span class="kw">RUN</span> <span class="arg">poetry</span> <span class="arg">config</span> <span class="arg">virtualenvs.in-project</span> <span class="arg">true</span> <span class="op">&amp;&amp;</span> \
+  <span class="arg">poetry</span> <span class="arg">install</span> <span class="flag">--no-root</span> <span class="flag">--only</span> <span class="arg">main</span>
+
+<span class="kw">COPY</span> <span class="path">src/</span> <span class="path">src/</span>
+<span class="kw">COPY</span> <span class="path">distilbert-base-uncased-finetuned-sst2/</span> <span class="path">distilbert-base-uncased-finetuned-sst2/</span>
+
+<span class="kw">ENV</span> <span class="arg">PATH</span>=<span class="str">"/app/.venv/bin:$PATH"</span>
+
+<span class="kw">CMD</span> [<span class="str">"uvicorn"</span>, <span class="str">"src.main:app"</span>, <span class="str">"--host"</span>, <span class="str">"0.0.0.0"</span>, <span class="str">"--port"</span>, <span class="str">"8000"</span>]</code></pre>
+
+      <pre class="docker-editor docker-panel docker-panel-multi"><code class="lang-dockerfile"><span class="kw">FROM</span> <span class="img">python:3.11-slim</span> <span class="kw">AS</span> <span class="arg">builder</span>
+
+<span class="kw">RUN</span> <span class="arg">apt-get</span> <span class="arg">update</span> <span class="op">&amp;&amp;</span> <span class="arg">apt-get</span> <span class="arg">install</span> <span class="flag">-y</span> <span class="flag">--no-install-recommends</span> \
+  <span class="pkg">build-essential</span> \
+  <span class="pkg">libffi-dev</span> \
+  <span class="pkg">git</span> <span class="op">&amp;&amp;</span> \
+  <span class="arg">rm</span> <span class="flag">-rf</span> <span class="path">/var/lib/apt/lists/*</span>
+
+<span class="kw">RUN</span> <span class="arg">pip</span> <span class="arg">install</span> <span class="flag">--no-cache-dir</span> <span class="pkg">poetry</span>
+
+<span class="kw">WORKDIR</span> <span class="path">/app</span>
+
+<span class="kw">COPY</span> <span class="path">pyproject.toml</span> <span class="path">poetry.lock</span> <span class="path">./</span>
+<span class="kw">RUN</span> <span class="arg">poetry</span> <span class="arg">config</span> <span class="arg">virtualenvs.in-project</span> <span class="arg">true</span> <span class="op">&amp;&amp;</span> \
+  <span class="arg">poetry</span> <span class="arg">install</span> <span class="flag">--no-root</span> <span class="flag">--only</span> <span class="arg">main</span>
+
+<span class="kw">FROM</span> <span class="img">python:3.11-slim</span> <span class="kw">AS</span> <span class="arg">final</span>
+
+<span class="kw">RUN</span> <span class="arg">apt-get</span> <span class="arg">update</span> <span class="op">&amp;&amp;</span> \
+  <span class="arg">apt-get</span> <span class="arg">install</span> <span class="flag">-y</span> <span class="flag">--no-install-recommends</span> \
+    <span class="pkg">curl</span> \
+    <span class="pkg">libffi-dev</span> <span class="op">&amp;&amp;</span> \
+  <span class="arg">rm</span> <span class="flag">-rf</span> <span class="path">/var/lib/apt/lists/*</span>
+
+<span class="kw">WORKDIR</span> <span class="path">/app</span>
+
+<span class="kw">COPY</span> <span class="flag">--from</span>=<span class="arg">builder</span> <span class="path">/app/.venv</span> <span class="path">/app/.venv</span>
+
+<span class="kw">COPY</span> <span class="path">src/</span> <span class="path">src/</span>
+<span class="kw">COPY</span> <span class="path">distilbert-base-uncased-finetuned-sst2/</span> <span class="path">distilbert-base-uncased-finetuned-sst2/</span>
+
+<span class="kw">ENV</span> <span class="arg">PATH</span>=<span class="str">"/app/.venv/bin:$PATH"</span>
+
+<span class="kw">CMD</span> [<span class="str">"uvicorn"</span>, <span class="str">"src.main:app"</span>, <span class="str">"--host"</span>, <span class="str">"0.0.0.0"</span>, <span class="str">"--port"</span>, <span class="str">"8000"</span>]</code></pre>
+    </div>
+  </div>
+</section>
+
+
+<section class="blog-section" id="infra">
+  <h2>Infrastructure Configuration</h2>
+
+  <p>
+    After containerizing the service, I deployed it on <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> using
+    <a style="color:#ff9900; font-weight:bold;">AWS EKS</a> so the API can run reliably outside a single machine.
+    The cluster is configured with a public endpoint in <code>us-east-2</code> running Kubernetes <code>1.34</code>.
+    Workloads run on a small node group (<code>t3.medium</code>, <code>1 node</code>, <code>AmazonLinux2023</code>, <code>20Gi</code> root volume).
+  </p>
+
+  <p>
+    Conceptually, <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> makes this project always on runtime. Instead of running a single server process,
+    I describe the desired state (pods, services, scaling rules) in <code>YAML</code> and let the control plane keep reality aligned.
+    If a container crashes, <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> recreates it. If the node goes away, <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> reschedules pods onto a healthy node. 
+    And because clients talk to a stable Service name instead of a changing pod IP, traffic keeps flowing even
+    as pods restart or get replaced.
+  </p>
+
+  <p>
+    <a style="color: #d82c20; font-weight: bold;">Redis</a> is deployed alongside the API as an in-cluster dependency. The API uses <code>REDIS_URL</code> pointing at the <a style="color: #d82c20; font-weight: bold;">Redis</a> Service DNS name,
+    so the application never needs to know pod IPs. When requests repeat, <a style="color: #d82c20; font-weight: bold;">Redis</a> enables fast cache hits and avoids
+    rerunning model inference, reducing latency and lowering CPU pressure.
+  </p>
+
+  <h3 style="margin-top:1.25rem;">Base Manifests</h3>
+
+  <div class="infra-shell">
+    <input class="infra-radio" type="radio" name="infra-base-tab" id="infra-base-kustom" checked>
+    <input class="infra-radio" type="radio" name="infra-base-tab" id="infra-base-api-deploy">
+    <input class="infra-radio" type="radio" name="infra-base-tab" id="infra-base-api-svc">
+    <input class="infra-radio" type="radio" name="infra-base-tab" id="infra-base-redis-deploy">
+    <input class="infra-radio" type="radio" name="infra-base-tab" id="infra-base-redis-svc">
+
+    <div class="infra-toolbar">
+      <div class="infra-tabs" role="tablist" aria-label="Base YAML">
+        <label class="infra-tab infra-tab-kustom" for="infra-base-kustom" role="tab">kustomize</label>
+        <label class="infra-tab infra-tab-api-deploy" for="infra-base-api-deploy" role="tab">api deploy</label>
+        <label class="infra-tab infra-tab-api-svc" for="infra-base-api-svc" role="tab">api service</label>
+        <label class="infra-tab infra-tab-redis-deploy" for="infra-base-redis-deploy" role="tab">redis deploy</label>
+        <label class="infra-tab infra-tab-redis-svc" for="infra-base-redis-svc" role="tab">redis service</label>
+      </div>
+      <div class="infra-filename">base/</div>
+    </div>
+
+    <div class="infra-viewport" aria-live="polite">
+      <pre class="infra-editor infra-panel infra-panel-kustom"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">kustomize.config.k8s.io/v1beta1</span>
+<span class="k">kind</span>: <span class="v">Kustomization</span>
+<span class="k">resources</span>:
+  - <span class="v">deployment-project.yaml</span>
+  - <span class="v">deployment-redis.yaml</span>
+  - <span class="v">service-project.yaml</span>
+  - <span class="v">service-redis.yaml</span></code></pre>
+
+      <pre class="infra-editor infra-panel infra-panel-api-deploy"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">apps/v1</span>
+<span class="k">kind</span>: <span class="v">Deployment</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">project-api-deployment</span>
+  <span class="k">labels</span>:
+    <span class="k">app</span>: <span class="v">project-api-deployment</span>
+<span class="k">spec</span>:
+  <span class="k">replicas</span>: <span class="n">1</span>
+  <span class="k">selector</span>:
+    <span class="k">matchLabels</span>:
+      <span class="k">app</span>: <span class="v">project-api</span>
+  <span class="k">template</span>:
+    <span class="k">metadata</span>:
+      <span class="k">labels</span>:
+        <span class="k">app</span>: <span class="v">project-api</span>
+      <span class="k">annotations</span>:
+        <span class="k">sidecar.istio.io/inject</span>: <span class="s">"true"</span>
+    <span class="k">spec</span>:
+      <span class="k">initContainers</span>:
+        - <span class="k">name</span>: <span class="v">init-verify-redis-service-dns</span>
+          <span class="k">image</span>: <span class="v">busybox:1.37</span>
+          <span class="k">command</span>: [<span class="s">"sh"</span>,<span class="s">"-c"</span>,<span class="s">"until nc -vz redis-service 6379; do echo waiting for redis dns; sleep 2; done"</span>]
+        - <span class="k">name</span>: <span class="v">init-verify-redis-ready</span>
+          <span class="k">image</span>: <span class="v">busybox:1.37</span>
+          <span class="k">command</span>: [<span class="s">"sh"</span>,<span class="s">"-c"</span>,<span class="s">"until (printf 'PING\\r\\n') | nc redis-service 6379; do echo waiting for redis; sleep 1; done"</span>]
+      <span class="k">containers</span>:
+        - <span class="k">name</span>: <span class="v">project-api-container</span>
+          <span class="k">image</span>: <span class="v">project:latest</span>
+          <span class="k">imagePullPolicy</span>: <span class="v">IfNotPresent</span>
+          <span class="k">env</span>:
+            - <span class="k">name</span>: <span class="v">REDIS_URL</span>
+              <span class="k">value</span>: <span class="v">redis://redis-service:6379/0</span>
+          <span class="k">resources</span>:
+            <span class="k">requests</span>:
+              <span class="k">cpu</span>: <span class="v">500m</span>
+              <span class="k">memory</span>: <span class="v">1500Mi</span>
+            <span class="k">limits</span>:
+              <span class="k">cpu</span>: <span class="s">"2"</span>
+              <span class="k">memory</span>: <span class="v">2500Mi</span>
+          <span class="k">ports</span>:
+            - <span class="k">containerPort</span>: <span class="n">8000</span>
+          <span class="k">readinessProbe</span>:
+            <span class="k">httpGet</span>: { <span class="k">path</span>: <span class="v">/project/health</span>, <span class="k">port</span>: <span class="n">8000</span> }
+            <span class="k">initialDelaySeconds</span>: <span class="n">1</span>
+            <span class="k">periodSeconds</span>: <span class="n">3</span>
+          <span class="k">livenessProbe</span>:
+            <span class="k">httpGet</span>: { <span class="k">path</span>: <span class="v">/project/health</span>, <span class="k">port</span>: <span class="n">8000</span> }
+            <span class="k">initialDelaySeconds</span>: <span class="n">15</span>
+            <span class="k">periodSeconds</span>: <span class="n">30</span>
+          <span class="k">startupProbe</span>:
+            <span class="k">httpGet</span>: { <span class="k">path</span>: <span class="v">/project/health</span>, <span class="k">port</span>: <span class="n">8000</span> }
+            <span class="k">failureThreshold</span>: <span class="n">30</span>
+            <span class="k">periodSeconds</span>: <span class="n">10</span></code></pre>
+
+      <pre class="infra-editor infra-panel infra-panel-api-svc"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">v1</span>
+<span class="k">kind</span>: <span class="v">Service</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">project-prediction-service</span>
+  <span class="k">labels</span>:
+    <span class="k">app</span>: <span class="v">project-prediction-service</span>
+<span class="k">spec</span>:
+  <span class="k">type</span>: <span class="v">ClusterIP</span>
+  <span class="k">ports</span>:
+    - <span class="k">name</span>: <span class="v">http</span>
+      <span class="k">port</span>: <span class="n">8000</span>
+      <span class="k">targetPort</span>: <span class="n">8000</span>
+  <span class="k">selector</span>:
+    <span class="k">app</span>: <span class="v">project-api</span></code></pre>
+
+      <pre class="infra-editor infra-panel infra-panel-redis-deploy"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">apps/v1</span>
+<span class="k">kind</span>: <span class="v">Deployment</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">redis-deployment</span>
+<span class="k">spec</span>:
+  <span class="k">replicas</span>: <span class="n">1</span>
+  <span class="k">selector</span>:
+    <span class="k">matchLabels</span>:
+      <span class="k">app</span>: <span class="v">redis-server</span>
+  <span class="k">template</span>:
+    <span class="k">metadata</span>:
+      <span class="k">labels</span>:
+        <span class="k">app</span>: <span class="v">redis-server</span>
+    <span class="k">spec</span>:
+      <span class="k">containers</span>:
+        - <span class="k">name</span>: <span class="v">redis</span>
+          <span class="k">image</span>: <span class="v">redis:7</span>
+          <span class="k">resources</span>:
+            <span class="k">requests</span>:
+              <span class="k">cpu</span>: <span class="v">200m</span>
+              <span class="k">memory</span>: <span class="v">500Mi</span>
+            <span class="k">limits</span>:
+              <span class="k">cpu</span>: <span class="v">1000m</span>
+              <span class="k">memory</span>: <span class="v">1000Mi</span>
+          <span class="k">command</span>: [<span class="s">"redis-server"</span>]
+          <span class="k">env</span>:
+            - <span class="k">name</span>: <span class="v">ALLOW_EMPTY_PASSWORD</span>
+              <span class="k">value</span>: <span class="s">"yes"</span>
+          <span class="k">ports</span>:
+            - <span class="k">containerPort</span>: <span class="n">6379</span></code></pre>
+
+      <pre class="infra-editor infra-panel infra-panel-redis-svc"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">v1</span>
+<span class="k">kind</span>: <span class="v">Service</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">redis-service</span>
+  <span class="k">labels</span>:
+    <span class="k">app</span>: <span class="v">redis-service</span>
+<span class="k">spec</span>:
+  <span class="k">type</span>: <span class="v">ClusterIP</span>
+  <span class="k">ports</span>:
+    - <span class="k">port</span>: <span class="n">6379</span>
+      <span class="k">targetPort</span>: <span class="n">6379</span>
+  <span class="k">selector</span>:
+    <span class="k">app</span>: <span class="v">redis-server</span></code></pre>
+    </div>
+  </div>
+
+  <p>
+    In <code>base/</code>, the two key objects are <strong>Deployment</strong> and <strong>Service</strong>.
+    A Deployment is <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> replication controller, it declares how many pod replicas should exist and what container image + settings they run.
+    If a pod exits (crash, OOM, node drain), the Deployment ensures a replacement pod is created so the system converges back to the desired replica count.
+    A Service provides a stable DNS name (and virtual IP) in front of those pods. That's why the API can reference <a style="color: #d82c20; font-weight: bold;">Redis</a> as
+    <code>redis-service:6379</code>, it's service discovery by name, not by fragile pod IPs.
+  </p>
+
+  <p>
+    The API Deployment also uses three health probes on <code>/project/health</code>. <strong>Startup</strong> gates the initial boot so slow model load
+    doesn't get treated as a failure. <strong>Readiness</strong> controls whether a pod receives traffic (only "ready" pods get added behind the Service).
+    <strong>Liveness</strong> catches deadlocks or bad states and triggers a restart. Together, these probes make the service resilient to the most common
+    production failure modes such as slow cold starts, partial initialization, and unhealthy but running processes.
+  </p>
+
+  <h3 style="margin-top:1.5rem;">Production Overlay (overlays/prod/)</h3>
+
+<div class="infra-shell">
+  <input class="infra-radio" type="radio" name="infra-prod-tab" id="infra-prod-kustom" checked>
+  <input class="infra-radio" type="radio" name="infra-prod-tab" id="infra-prod-hpa">
+  <input class="infra-radio" type="radio" name="infra-prod-tab" id="infra-prod-vs">
+  <input class="infra-radio" type="radio" name="infra-prod-tab" id="infra-prod-ns">
+  <input class="infra-radio" type="radio" name="infra-prod-tab" id="infra-prod-telemetry">
+
+  <div class="infra-toolbar">
+    <div class="infra-tabs" role="tablist" aria-label="Prod YAML">
+      <label class="infra-tab infra-tab-kustom" for="infra-prod-kustom" role="tab">kustomize</label>
+      <label class="infra-tab infra-tab-hpa" for="infra-prod-hpa" role="tab">HPA</label>
+      <label class="infra-tab infra-tab-vs" for="infra-prod-vs" role="tab">virtual svc</label>
+      <label class="infra-tab infra-tab-ns" for="infra-prod-ns" role="tab">namespace</label>
+      <label class="infra-tab infra-tab-telemetry" for="infra-prod-telemetry" role="tab">telemetry</label>
+    </div>
+    <div class="infra-filename">overlays/prod/</div>
+  </div>
+
+  <div class="infra-viewport" aria-live="polite">
+    <pre class="infra-editor infra-panel infra-panel-kustom"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">kustomize.config.k8s.io/v1beta1</span>
+<span class="k">kind</span>: <span class="v">Kustomization</span>
+
+<span class="k">namespace</span>: <span class="v">rnap</span>
+
+<span class="k">resources</span>:
+  - <span class="v">../../base</span>
+  - <span class="v">namespace.yaml</span>
+  - <span class="v">hpa-project.yaml</span>
+  - <span class="v">virtual-service.yaml</span>
+  - <span class="v">telemetry.yaml</span>
+
+<span class="k">images</span>:
+  - <span class="k">name</span>: <span class="v">project</span>
+    <span class="k">newName</span>: <span class="v">MYAWSACCOUNTID.dkr.ecr.us-east-2.amazonaws.com/rnap/project</span>
+    <span class="k">newTag</span>: <span class="v">demo-prod-amd64</span></code></pre>
+
+    <pre class="infra-editor infra-panel infra-panel-hpa"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">autoscaling/v1</span>
+<span class="k">kind</span>: <span class="v">HorizontalPodAutoscaler</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">project-api-hpa</span>
+<span class="k">spec</span>:
+  <span class="k">scaleTargetRef</span>:
+    <span class="k">apiVersion</span>: <span class="v">apps/v1</span>
+    <span class="k">kind</span>: <span class="v">Deployment</span>
+    <span class="k">name</span>: <span class="v">project-api-deployment</span>
+  <span class="k">minReplicas</span>: <span class="n">1</span>
+  <span class="k">maxReplicas</span>: <span class="n">5</span>
+  <span class="k">targetCPUUtilizationPercentage</span>: <span class="n">50</span></code></pre>
+
+    <pre class="infra-editor infra-panel infra-panel-vs"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">networking.istio.io/v1beta1</span>
+<span class="k">kind</span>: <span class="v">VirtualService</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">external-access</span>
+  <span class="k">namespace</span>: <span class="v">rnap</span>
+<span class="k">spec</span>:
+  <span class="k">hosts</span>:
+    - <span class="s">"*"</span>
+  <span class="k">gateways</span>:
+    - <span class="v">istio-ingress/rnap-gateway</span>
+  <span class="k">http</span>:
+    - <span class="k">match</span>:
+        - <span class="k">uri</span>:
+            <span class="k">prefix</span>: <span class="v">/project</span>
+      <span class="k">route</span>:
+        - <span class="k">destination</span>:
+            <span class="k">host</span>: <span class="v">project-prediction-service</span>
+            <span class="k">port</span>:
+              <span class="k">number</span>: <span class="n">8000</span></code></pre>
+
+    <pre class="infra-editor infra-panel infra-panel-ns"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">v1</span>
+<span class="k">kind</span>: <span class="v">Namespace</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">rnap</span>
+  <span class="k">labels</span>:
+    <span class="k">env</span>: <span class="v">prod</span>
+    <span class="k">istio-injection</span>: <span class="s">"enabled"</span></code></pre>
+
+    <pre class="infra-editor infra-panel infra-panel-telemetry"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">telemetry.istio.io/v1</span>
+<span class="k">kind</span>: <span class="v">Telemetry</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">mesh-default</span>
+  <span class="k">namespace</span>: <span class="v">istio-system</span>
+<span class="k">spec</span>:
+  <span class="k">metrics</span>:
+  - <span class="k">providers</span>:
+    - <span class="k">name</span>: <span class="v">prometheus</span></code></pre>
+  </div>
+</div>
+
+  <p>
+    The production overlay uses <strong>Kustomize</strong> to apply environment specific changes on top of the same base.
+    The <code>namespace</code> isolates prod resources, and the <code>images</code> section swaps <code>project:latest</code>
+    into the pinned ECR image tag, which is how the cluster runs the exact build pushed.
+    The HPA adds elasticity during spikes,  <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> can increase the number of API pods up to the configured maximum, then scale back down when traffic drops.
+    Finally, the VirtualService defines external routing rules so requests get routed to the API Service, while  <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> continues
+    to load balance across healthy pods behind the scenes.
+  </p>
+</section>
+
+
+<section class="blog-section" id="load">
+  <h2>Load Testing (k6)</h2>
+
+  <p>
+    Once the API is deployed, the next question becomes: <em>how does it behave under real traffic?</em>
+    In production, requests rarely arrive at a perfectly steady rate. Instead, systems see ramp-ups,
+    steady plateaus (normal usage), and ramp-downs (traffic fades). They also see a mix of repeated inputs (cache hits) and
+    novel inputs (cache misses) which is especially important for inference workloads where "misses" tend to be CPU-heavy.
+  </p>
+
+  <p>
+    To simulate that behavior, I used <a style="color:#7d64ff; font-weight:bold;">k6</a> to generate controlled HTTP traffic against the
+    in-cluster service DNS. Running the load generator <em>inside</em> <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> isolates the measurement to application + cluster behavior
+    (rather than public internet variability). The test ramps from <code>0</code> to <code>10</code> virtual users, holds steady, then ramps back to <code>0</code>.
+    Each user repeatedly calls <code>/project/bulk-predict</code> with a payload that has a configurable cache rate—so we measure performance under a realistic
+    mix of cache hits and cache misses.
+  </p>
+
+  <p>
+    During the run, I track two layers of metrics. First, <strong>request-level performance</strong>: latency percentiles (especially p95/p99),
+    throughput (requests/sec), and error rate (non-2xx responses). Second, <strong>system behavior</strong>: pod CPU pressure (what drives HPA decisions),
+    replica count changes, and how quickly the service recovers from load spikes. These metrics tell whether the service remains responsive,
+    whether scaling kicks in when needed, and whether caching actually reduces compute load under repeat traffic.
+  </p>
+
+  <h3 style="margin-top:1.25rem;">Load Simulation (k6)</h3>
+
+  <div class="infra-shell">
+    <input class="infra-radio" type="radio" name="k6-tab" id="k6-script" checked>
+    <input class="infra-radio" type="radio" name="k6-tab" id="k6-job">
+
+    <div class="infra-toolbar">
+      <div class="infra-tabs" role="tablist" aria-label="k6 Config">
+        <label class="infra-tab infra-tab-k6-script" for="k6-script" role="tab">simulate.js</label>
+        <label class="infra-tab infra-tab-k6-job" for="k6-job" role="tab">k6 job</label>
+      </div>
+      <div class="infra-filename">overlays/prod/</div>
+    </div>
+
+    <div class="infra-viewport" aria-live="polite">
+<pre class="infra-editor infra-panel infra-panel-k6-script"><code class="lang-js"><span class="kw">import</span> <span class="id">http</span> <span class="kw">from</span> <span class="str">'k6/http'</span><span class="op">;</span>
+<span class="kw">import</span> <span class="op">{</span> <span class="id">check</span><span class="op">,</span> <span class="id">group</span><span class="op">,</span> <span class="id">sleep</span> <span class="op">}</span> <span class="kw">from</span> <span class="str">'k6'</span><span class="op">;</span>
+
+<span class="kw">export</span> <span class="kw">const</span> <span class="id">target</span> <span class="op">=</span> <span class="num">10</span><span class="op">;</span>
+<span class="kw">export</span> <span class="kw">const</span> <span class="id">options</span> <span class="op">=</span> <span class="op">{</span>
+  <span class="prop">stages</span><span class="op">:</span> <span class="op">[</span>
+    <span class="op">{</span> <span class="prop">duration</span><span class="op">:</span> <span class="str">'30s'</span><span class="op">,</span> <span class="prop">target</span><span class="op">:</span> <span class="id">target</span> <span class="op">}</span><span class="op">,</span> <span class="cm">// ramp-up from 0 to target users</span>
+    <span class="op">{</span> <span class="prop">duration</span><span class="op">:</span> <span class="str">'7m'</span><span class="op">,</span>  <span class="prop">target</span><span class="op">:</span> <span class="id">target</span> <span class="op">}</span><span class="op">,</span> <span class="cm">// sustain load</span>
+    <span class="op">{</span> <span class="prop">duration</span><span class="op">:</span> <span class="str">'3m'</span><span class="op">,</span>  <span class="prop">target</span><span class="op">:</span> <span class="num">0</span> <span class="op">}</span><span class="op">,</span>      <span class="cm">// ramp-down to 0</span>
+  <span class="op">]</span><span class="op">,</span>
+  <span class="prop">thresholds</span><span class="op">:</span> <span class="op">{</span>
+    <span class="str">'http_req_duration'</span><span class="op">:</span> <span class="op">[</span><span class="str">'p(99)&amp;lt;2000'</span><span class="op">]</span> <span class="cm">// SLO: 99% of requests under 2s</span>
+  <span class="op">}</span><span class="op">,</span>
+<span class="op">}</span><span class="op">;</span>
+
+<span class="kw">const</span> <span class="id">fixed</span> <span class="op">=</span> <span class="op">[</span><span class="str">"I love you!"</span><span class="op">,</span> <span class="str">"I hate you!"</span><span class="op">,</span> <span class="str">"I am a Kubernetes Cluster!"</span><span class="op">]</span>
+<span class="kw">var</span> <span class="id">random_shuffler</span> <span class="op">=</span> <span class="op">[</span>
+  <span class="str">"I love you!"</span><span class="op">,</span>
+  <span class="str">"I hate you!"</span><span class="op">,</span>
+  <span class="str">"I am a Kubernetes Cluster!"</span><span class="op">,</span>
+  <span class="str">"I ran to the store"</span><span class="op">,</span>
+  <span class="str">"The students are very good in this class"</span><span class="op">,</span>
+  <span class="str">"Working on Saturday morning is brutal"</span><span class="op">,</span>
+  <span class="str">"How much wood could a wood chuck chuck if a wood chuck could chuck wood?"</span><span class="op">,</span>
+  <span class="str">"A Wood chuck would chuck as much wood as a wood chuck could chuck if a wood chuck could chuck wood"</span><span class="op">,</span>
+  <span class="str">"Food is very tasty"</span><span class="op">,</span>
+  <span class="str">"Welcome to the thunderdome"</span>
+<span class="op">]</span><span class="op">;</span>
+
+<span class="kw">const</span> <span class="id">generator</span> <span class="op">=</span> <span class="op">(</span><span class="id">cacheRate</span><span class="op">)</span> <span class="op">=&amp;gt;</span> <span class="op">{</span>
+  <span class="kw">const</span> <span class="id">rand</span> <span class="op">=</span> <span class="fn">Math</span><span class="op">.</span><span class="id">random</span><span class="op">(</span><span class="op">)</span>
+  <span class="kw">const</span> <span class="id">text</span> <span class="op">=</span> <span class="id">rand</span> <span class="op">&amp;gt;</span> <span class="id">cacheRate</span>
+    <span class="op">?</span> <span class="id">random_shuffler</span><span class="op">.</span><span class="id">map</span><span class="op">(</span><span class="id">value</span> <span class="op">=&amp;gt;</span> <span class="op">(</span><span class="op">{</span> <span class="prop">value</span><span class="op">,</span> <span class="prop">sort</span><span class="op">:</span> <span class="fn">Math</span><span class="op">.</span><span class="id">random</span><span class="op">(</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span><span class="op">)</span>
+      <span class="op">.</span><span class="id">sort</span><span class="op">(</span><span class="op">(</span><span class="id">a</span><span class="op">,</span> <span class="id">b</span><span class="op">)</span> <span class="op">=&amp;gt;</span> <span class="id">a</span><span class="op">.</span><span class="id">sort</span> <span class="op">-</span> <span class="id">b</span><span class="op">.</span><span class="id">sort</span><span class="op">)</span>
+      <span class="op">.</span><span class="id">map</span><span class="op">(</span><span class="op">(</span><span class="op">{</span> <span class="prop">value</span> <span class="op">}</span><span class="op">)</span> <span class="op">=&amp;gt;</span> <span class="id">value</span><span class="op">)</span>
+    <span class="op">:</span> <span class="id">fixed</span>
+  <span class="kw">return</span> <span class="op">{</span> <span class="prop">text</span> <span class="op">}</span>
+<span class="op">}</span>
+
+<span class="kw">const</span> <span class="id">BASE_URL</span> <span class="op">=</span> <span class="str">'http://project-prediction-service.rnap.svc.cluster.local:8000'</span><span class="op">;</span>
+<span class="kw">const</span> <span class="id">CACHE_RATE</span> <span class="op">=</span> <span class="num">0.5</span>
+
+<span class="kw">export</span> <span class="kw">default</span> <span class="op">(</span><span class="op">)</span> <span class="op">=&amp;gt;</span> <span class="op">{</span>
+  <span class="kw">const</span> <span class="id">payload</span> <span class="op">=</span> <span class="fn">JSON</span><span class="op">.</span><span class="id">stringify</span><span class="op">(</span><span class="id">generator</span><span class="op">(</span><span class="id">CACHE_RATE</span><span class="op">)</span><span class="op">)</span>
+  <span class="kw">const</span> <span class="id">predictionRes</span> <span class="op">=</span> <span class="id">http</span><span class="op">.</span><span class="id">request</span><span class="op">(</span><span class="str">'POST'</span><span class="op">,</span> <span class="str">`${BASE_URL}/project/bulk-predict`</span><span class="op">,</span> <span class="id">payload</span><span class="op">)</span>
+  <span class="id">check</span><span class="op">(</span><span class="id">predictionRes</span><span class="op">,</span> <span class="op">{</span> <span class="str">'is 200'</span><span class="op">:</span> <span class="op">(</span><span class="id">r</span><span class="op">)</span> <span class="op">=&amp;gt;</span> <span class="id">r</span><span class="op">.</span><span class="id">status</span> <span class="op">===</span> <span class="num">200</span> <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span><span class="op">;</span></code></pre>
+
+      <pre class="infra-editor infra-panel infra-panel-k6-job"><code class="lang-yaml"><span class="k">apiVersion</span>: <span class="v">batch/v1</span>
+<span class="k">kind</span>: <span class="v">Job</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">k6-load-test</span>
+  <span class="k">namespace</span>: <span class="v">rnap</span>
+<span class="k">spec</span>:
+  <span class="k">template</span>:
+    <span class="k">spec</span>:
+      <span class="k">containers</span>:
+        - <span class="k">name</span>: <span class="v">k6</span>
+          <span class="k">image</span>: <span class="v">grafana/k6:0.52.0</span>
+          <span class="k">args</span>:
+            - <span class="v">run</span>
+            - <span class="v">--summary-trend-stats=min,avg,med,max,p(90),p(95),p(99),p(99.99)</span>
+            - <span class="v">/scripts/simulate.js</span>
+          <span class="k">env</span>:
+            - <span class="k">name</span>: <span class="v">NAMESPACE</span>
+              <span class="k">value</span>: <span class="v">rnap</span>
+          <span class="k">volumeMounts</span>:
+            - <span class="k">name</span>: <span class="v">k6-scripts</span>
+              <span class="k">mountPath</span>: <span class="v">/scripts</span>
+      <span class="k">restartPolicy</span>: <span class="v">Never</span>
+      <span class="k">volumes</span>:
+        - <span class="k">name</span>: <span class="v">k6-scripts</span>
+          <span class="k">configMap</span>:
+            <span class="k">name</span>: <span class="v">k6-simulate</span>
+  <span class="k">backoffLimit</span>: <span class="n">0</span></code></pre> 
+    </div>
+  </div>
+
+  <p>
+    The test is packaged as a <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> Job so it runs the same way every time with a known <a style="color: #7d64ff; font-weight: bold;">k6</a> version, a fixed script, and a clean lifecycle.
+    The output gives immediate feedback (latency distributions and pass/fail thresholds), while the cluster-level monitoring shows 
+    whether latency increases are tied to CPU saturation, scaling delays, or cache miss pressure.
+  </p>
+
+
+
+      <h3 style="margin-top:1.25rem;">Run output (simulate.js)</h3>
+      <pre class="code-block"><code>
+(10m29.0s), 01/10 VUs, 2866 complete and 0 interrupted iterations default [ 100% ]
+01/10 VUs
+10m29. 0s/10m30. 0s
+running (10m30.0s), 01/10 VUs, 2869 complete and 0 interrupted iterations default [ 100% ]
+01/10 VUs 10m30.0s/10m30.0s
+
+THRESHOLDS
+http_req_duration
+✗ 'p(99)&lt;2000' p(99)=5.07s
+
+TOTAL RESULTS
+checks_total: 2870
+checks_succeeded: 100.00%
+checks_failed: 0.00%
+
+HTTP
+http_req_duration: avg=1.86s min=2.15ms med=58.5ms max=5.56s p(90)=4.58s p(95)=4.75s p(99)=5.07s
+http_req_failed: 0.00%
+http_reqs: 2870 (4.555271/s)
+
+EXECUTION
+iteration_duration: avg=1.86s min=2.28ms med=68.21ms max=5.56s p(90)=4.58s p(95)=4.75s
+vus: 1 (min=1 max=10)
+vus_max: 10 (min=10 max=10)
+
+NETWORK
+data_received: 2.3 MB (3.7 kB/s)
+data_sent: 1.1 MB (1.7 kB/s)
+</code></pre>
+
+      <h3 style="margin-top:1.25rem;">How to interpret this run</h3>
+      <ul>
+        <li>
+          <strong>Reliability is good:</strong> 0% failed requests and 100% checks passing means the API stayed up and returned HTTP 200s.
+        </li>
+        <li>
+          <strong>Median is fast, tail is slow:</strong> a ~58ms median alongside a ~5s p99 indicates
+          some requests return quickly (cache hits), but a smaller fraction take several seconds (cache misses).
+        </li>
+        <li>
+          <strong>The SLO failed:</strong> the enforced threshold was <code>p(99)&lt;2s</code>, but the observed p99 was ~5.07s.
+          This is exactly where monitoring helps: <a style="color:#f46800; font-weight:bold;">Grafana</a> makes it obvious that tail latency rises even when throughput and success rate look healthy.
+        </li>
+      </ul>
+
+      <div class="note">
+        <strong>What this suggests:</strong> to push p99 under 2s, we likely need some combination of (1) more CPU headroom (requests/limits or more replicas),
+        (2) faster inference (smaller model / optimized runtime), and (3) a cache strategy that increases hit-rate for realistic traffic patterns.
+      </div>
+</section>
+
+<section class="blog-section" id="monitoring">
+  <h2>Monitoring (Grafana)</h2>
+
+  <p>
+    With the API deployed and <a style="color:#7d64ff; font-weight:bold;">k6</a> generating load, the last piece is understanding
+    <strong>how the system actually behaves</strong>.
+    <a style="color:#466BB0; font-weight:bold;">Istio</a> sidecars emit rich
+    telemetry to <a style="color:#E6522C; font-weight:bold;">Prometheus</a>, and
+    <a style="color:#f46800; font-weight:bold;">Grafana</a>
+    turns that data into dashboards. This section focuses on the most important
+    question for a production-facing ML API:
+    <em>what does <a style="color: #d82c20; font-weight: bold;">Redis</a> caching do to end-to-end latency under steady traffic?</em>
+  </p>
+
+  <p>
+    To answer that, I ran the same <a style="color:#7d64ff; font-weight:bold;">k6</a> workload twice:
+  </p>
+  <ul>
+    <li><strong>Cache disabled</strong> - <code>CACHE_HIT_RATE = 0.0</code></li>
+    <li><strong>Cache always used</strong> - <code>CACHE_HIT_RATE = 1.0</code></li>
+  </ul>
+
+  <p>
+    The request rate, payload size, cluster configuration, and test duration are
+    identical between runs. That means any difference in latency is
+    due to whether responses are computed fresh or served from <a style="color: #d82c20; font-weight: bold;">Redis</a>.
+  </p>
+
+  <h3 style="margin-top:1.5rem;">1. Verifying Load and Experiment Validity</h3>
+
+  <p>
+    First, I use the <strong>Incoming Requests By Destination Workload And Response Code</strong>
+    panel to verify the basic shape of the experiment.
+  </p>
+
+  <figure class="img-wide">
+    <img src="../images/mlapi/requests.png"
+         class="blog-image">
+  </figure>
+
+  <p>
+    Incoming requests to <code>project-api-deployment.rnap</code> with <a style="color: #d82c20; font-weight: bold;">Redis</a> cache
+    disabled (top) and enabled (bottom). Throughput stays around <strong>4-6 ops/s</strong> with
+    consistent <strong>HTTP 200s</strong> in both cases.
+  </p>
+
+  <p>
+    Both runs show:
+  </p>
+  <ul>
+    <li>Steady throughput around <strong>4-6 ops/s</strong></li>
+    <li>All responses as <strong>HTTP 200</strong></li>
+    <li>No spikes of 4xx/5xx errors</li>
+  </ul>
+
+  <p>
+    This tells us the workload is stable and the service is healthy.
+    If latency changes, it's not because the traffic pattern collapsed or the app
+    started throwing errors, rather it's because caching changed the work being done per
+    request.
+  </p>
+
+  <h3 style="margin-top:1.75rem;">2. Latency Distribution by Percentile</h3>
+
+  <p>
+    The most important panel for this project is
+    <strong>Incoming Request Duration By Service Workload</strong>, which shows
+    the latency percentiles seen by
+    <a style="color:#466BB0; font-weight:bold;">Istio</a> for traffic hitting the
+    <code>project-api-deployment.rnap</code> workload.
+  </p>
+
+  <figure class="img-wide">
+    <img src="../images/mlapi/service.png"
+         alt="Incoming Request Duration By Service Workload, cache disabled vs cache enabled"
+         class="blog-image">
+  </figure>
+
+  <p>
+    <span style="color:#7ad67a; font-weight:bold;">P50</span> /
+    <span style="color:#ffd666; font-weight:bold;">P90</span> /
+    <span style="color:#66ccff; font-weight:bold;">P95</span> /
+    <span style="color:#ffb347; font-weight:bold;">P99</span>
+    request duration for the API with cache disabled (top) versus cache enabled (bottom).
+  </p>
+
+  <p>
+    The panel plots four key percentiles:
+  </p>
+  <ul>
+    <li><span style="color:#7ad67a; font-weight:bold;">P50</span> - median latency (the "typical" request)</li>
+    <li><span style="color:#ffd666; font-weight:bold;">P90</span> - upper-end latency under load</li>
+    <li><span style="color:#66ccff; font-weight:bold;">P95</span> - late tail where users start noticing slowness</li>
+    <li><span style="color:#ffb347; font-weight:bold;">P99</span> - the slowest <strong>1%</strong> of requests (hard tail)</li>
+  </ul>
+
+  <p>
+    The percentile definition is:
+    <strong><span>P<sub>k</sub> = latency value where k% of requests are faster and (100 - k)% are slower.</span></strong>
+  </p>
+
+  <p>
+    Tail latency (<span style="color:#66ccff; font-weight:bold;">P95</span>/<span style="color:#ffb347; font-weight:bold;">P99</span>)
+    is what users feel when the system is stressed. You can have a median of <strong>5s</strong>
+    and still deliver a bad experience if <strong>1-5%</strong> of requests take several seconds.
+  </p>
+
+  <h4>2.1 Cache Disabled (<code>CACHE_HIT_RATE = 0.0</code>)</h4>
+
+  <p>
+    With the cache disabled, every request runs full <a style="color: #ffcc4d; font-weight: bold;">DistilBERT</a> inference:
+    tokenize, batch, compute logits, and post-process. In the <a style="color:#f46800; font-weight:bold;">Grafana</a> panel, this
+    shows up roughly as:
+  </p>
+  <ul>
+    <li><span style="color:#7ad67a; font-weight:bold;">P50</span> hovering around <strong>4-5 seconds</strong></li>
+    <li><span style="color:#ffd666; font-weight:bold;">P90</span> closer to <strong>6-8 seconds</strong></li>
+    <li><span style="color:#66ccff; font-weight:bold;">P95</span> flirting with the upper single digits</li>
+    <li><span style="color:#ffb347; font-weight:bold;">P99</span> occasionally spiking into the <strong>8-10 second</strong> range</li>
+  </ul>
+
+  <p>
+    The curves are also fairly "jagged", which means the latency distribution moves
+    around as the node's CPU and memory pressure change. This is what we expect
+    when every request is CPU-bound and there is no caching to smooth out work.
+  </p>
+
+  <h4>2.2 Cache Enabled (<code>CACHE_HIT_RATE = 1.0</code>)</h4>
+
+  <p>
+    In the second run, every request is a cache hit. The code path becomes:
+  </p>
+
+  <p>
+    <span><em>cache miss path:</em> <strong>&nbsp; T<sub>nocache</sub> = T<sub>tokenize</sub> + T<sub>inference</sub> + T<sub>postprocess</sub></strong></span><br>
+    <span><em>cache hit path:</em> <strong>&nbsp;&nbsp; T<sub>cache</sub> ≈ T<sub>redis_lookup</sub> + T<sub>network</sub></strong></span>
+  </p>
+
+  <p>
+    <a style="color: #d82c20; font-weight: bold;">Redis</a> lookups are dramatically cheaper than running a transformer model, so the
+    panel now shows:
+  </p>
+  <ul>
+    <li>Lower <span style="color:#7ad67a; font-weight:bold;">P50</span> (median latency)</li>
+    <li>Compressed <span style="color:#ffd666; font-weight:bold;">P90</span>, <span style="color:#66ccff; font-weight:bold;">P95</span>, and <span style="color:#ffb347; font-weight:bold;">P99</span></li>
+    <li>Much smoother curves with fewer spikes</li>
+  </ul>
+
+  <p>
+    In other words, caching makes the average request faster and also
+    makes the <em>worst</em> requests less bad which is exactly what we want in a
+    production system.
+  </p>
+
+  <h4>2.3 Quantifying the Improvement</h4>
+
+  <p>
+    To reason about the benefit, it's helpful to look at relative reduction:
+  </p>
+
+  <p>
+    <span><strong>L₀(P<sub>k</sub>) = latency at percentile k with cache disabled</strong></span><br>
+    <span><strong>L₁(P<sub>k</sub>) = latency at percentile k with cache enabled</strong></span><br>
+    <span><strong>P<sub>k</sub> = (L₀(P<sub>k</sub>) - L₁(P<sub>k</sub>)) / L₀(P<sub>k</sub>) × 100%</strong></span>
+  </p>
+
+  <p>
+    In my runs, the reductions roughly fell into the following ranges:
+  </p>
+
+  <ul>
+    <li><span style="color:#7ad67a; font-weight:bold;">P50</span>: around <strong>10-25% lower</strong></li>
+    <li><span style="color:#ffd666; font-weight:bold;">P90</span>: around <strong>15-25% lower</strong></li>
+    <li><span style="color:#66ccff; font-weight:bold;">P95</span>: around <strong>15-25% lower</strong></li>
+    <li><span style="color:#ffb347; font-weight:bold;">P99</span>: around <strong>20-30% lower</strong></li>
+  </ul>
+
+  <p>
+    The higher the percentile, the more caching helps. That's a strong signal that
+    <a style="color: #d82c20; font-weight: bold;">Redis</a> is eating the heavy tail of repeated requests and preventing them from
+    turning into multi-second outliers.
+  </p>
+
+  <h3 style="margin-top:1.75rem;">3. Workload Consistency: Request Size</h3>
+
+  <p>
+    The <strong>Incoming Request Size By Service Workload</strong> panel is a
+    sanity check that the experiment stayed fair.
+  </p>
+
+  <figure class="img-wide">
+    <img src="../images/mlapi/size.png" alt="Incoming Request Size By Service Workload"
+         class="blog-image">
+  </figure>
+
+  <p>
+    Request payload sizes remain stable between runs, so performance differences come
+    from caching, not from different input sizes. In both runs, payload size sits
+    around the same <strong>1-2.5&nbsp;kB band</strong>. That means:
+  </p>
+
+  <ul>
+    <li>I didn't accidentally send smaller requests in the "faster" run.</li>
+    <li>Network overhead stayed essentially constant between configurations.</li>
+  </ul>
+
+  <p>
+    Combined with the earlier throughput panel, this confirms that we're comparing
+    apples to apples: same request rate, same request size, same cluster, only the
+    cache behavior changed.
+  </p>
+
+  <h3 style="margin-top:1.75rem;">4. Omitted Panels</h3>
+
+  <p>
+    The full <a style="color:#f46800; font-weight:bold;">Grafana</a> dashboard also includes several other panels such as
+    <em>Incoming Requests By Source And Response Code</em>,
+    <em>Incoming Request Duration By Source</em>,
+    <em>Incoming Request Size By Source</em>, and
+    <em>Response Size By Service/Source</em>.
+  </p>
+
+    <figure class="img-wide">
+    <img src="../images/mlapi/full.png" alt="Incoming Request Size By Service Workload"
+         class="blog-image">
+  </figure>
+
+  <p>
+    I intentionally left these out for two reasons:
+  </p>
+
+  <ul>
+    <li>
+      <strong>They duplicate the same story.</strong> In this experiment there is
+      only one logical client (<code>k6-load.rnap</code>) and one backend
+      workload. The "by source" panels have almost identical shapes to the
+      "by service workload" panels, so including both would not bring new insight.
+    </li>
+    <li>
+      <strong>Response size is nearly constant.</strong> The sentiment API always
+      returns the same small JSON structure for each input text. The response-size
+      panels are almost flat lines; they're useful for sanity-checking that nothing
+      weird is happening, but they don't help explain meaningful changes.
+    </li>
+  </ul>
+
+  <p>
+    For a real multi-service mesh with many callers, the "by source" views would be
+    critical to identify noisy neighbors or misbehaving clients. In this controlled,
+    single-client benchmark, they're redundant - so I focus on the three panels that
+    directly support the caching story: <em>request volume</em>,
+    <em>request duration</em>, and <em>request size</em>.
+  </p>
+
+  <h3 style="margin-top:1.75rem;">5. Key Takeaways</h3>
+
+  <p>
+    Putting it all together:
+  </p>
+
+  <ul>
+    <li>
+      <strong>Reliability stays high.</strong> Even under continuous traffic, the
+      service returns <strong>100% HTTP 200s</strong> in both cache and no-cache runs.
+    </li>
+    <li>
+      <strong>Throughput is stable.</strong> The API comfortably sustains <strong>~4-6
+      req/s</strong> on a single <code>t3.medium</code> node with a 1-replica Deployment.
+    </li>
+    <li>
+      <strong>Tail latency is where caching shines.</strong> Median latency
+      improves, but the biggest gain is in
+      <span style="color:#66ccff; font-weight:bold;">P95</span> /
+      <span style="color:#ffb347; font-weight:bold;">P99</span>.
+    </li>
+    <li>
+      <strong>Workload fairness is preserved.</strong> Request size and traffic
+      shape are controlled, so we can directly attribute the improvement to <a style="color: #d82c20; font-weight: bold;">Redis</a>.
+    </li>
+  </ul>
+
+  <p>
+    If this service were running in production, enabling <a style="color: #d82c20; font-weight: bold;">Redis</a> with a realistic
+    cache key strategy would:
+  </p>
+
+  <ul>
+    <li>Lower perceived latency for repeat traffic</li>
+    <li>Reduce CPU burn on the node (fewer full model inferences)</li>
+    <li>Give the HorizontalPodAutoscaler more headroom before scaling out</li>
+    <li>Improve resilience during short traffic spikes</li>
+  </ul>
+
+  <p>
+    In that sense, caching is an architectural
+    lever that improves <strong>user experience, resource efficiency, and system
+    robustness</strong> at the same time. The
+    <a style="color:#f46800; font-weight:bold;">Grafana</a> dashboards make all of this
+    visible in a way that's hard to argue with which is exactly what we want
+    when running ML workloads on real infrastructure.
+  </p>
+</section>
+
+<section class="blog-section" id="results">
+  <h2>Closing Thoughts</h2>
+
+  <p>
+    This project started as “serve a model behind an API”, and ended up looking much more like a real production system:
+    containerization for reproducibility, <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> for resilience, <a style="color: #d82c20; font-weight: bold;">Redis</a> for performance,
+    and load testing + dashboards to validate behavior with evidence instead of guesswork.
+  </p>
+
+  <h3 style="margin-top:1.25rem;">What I observed</h3>
+
+  <ul>
+    <li>
+      <strong>Reliability stayed strong under load:</strong>
+      <a style="color:#7d64ff; font-weight:bold;">k6</a> reported <strong>0% failed requests</strong> and <strong>100% checks passing</strong>,
+      and <a style="color:#f46800; font-weight:bold;">Grafana</a> confirmed steady <strong>HTTP 200</strong> responses.
+    </li>
+    <li>
+      <strong>Throughput was stable:</strong>
+      the system sustained about <strong>~4-6 requests/sec</strong> during the steady state portion of the run.
+    </li>
+    <li>
+      <strong>Tail latency was the main bottleneck:</strong>
+      the median stayed low (cache hits), but       <span style="color:#66ccff; font-weight:bold;">P95</span> /
+      <span style="color:#ffb347; font-weight:bold;">P99</span> rose into the multi-second range (cache misses / CPU-bound),
+      causing the <code>p(99)&lt;2s</code> SLO threshold to fail.
+    </li>
+    <li>
+      <strong>Caching helped most where it matters:</strong>
+      enabling <a style="color: #d82c20; font-weight: bold;">Redis</a> compressed the tail       <span style="color:#66ccff; font-weight:bold;">P95</span> /
+      <span style="color:#ffb347; font-weight:bold;">P99</span> and made the latency curve smoother,
+      reducing bad experiences even when average behavior looks fine.
+    </li>
+  </ul>
+
+  <div class="note">
+    <strong>Key takeaway:</strong> A model can be "correct" and the system can be "healthy" while users still feel slowness.
+    The difference comes down to tail latency — and you only see it clearly when you combine
+    <a style="color:#7d64ff; font-weight:bold;">k6</a> with <a style="color:#f46800; font-weight:bold;">Grafana</a>.
+  </div>
+
+  <h3 style="margin-top:1.25rem;">What I would improve next</h3>
+
+  <ul>
+    <li>
+      <strong>Reduce cold-start and per-request compute:</strong>
+      explore a smaller model, optimized inference runtime, and batching controls to reduce CPU pressure.
+    </li>
+    <li>
+      <strong>Improve cache strategy:</strong>
+      use a more realistic cache key (normalized text), measure hit-rate explicitly,
+      and add TTL + eviction tuning so <a style="color: #d82c20; font-weight: bold;">Redis</a> remains useful as traffic changes.
+    </li>
+    <li>
+      <strong>Scale on the right signal:</strong>
+      HPA on CPU works, but inference services often benefit from scaling on request rate / queue depth or custom metrics.
+      <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> makes this easy to evolve over time.
+    </li>
+    <li>
+      <strong>Make SLOs actionable:</strong>
+      keep the <code>p99</code> threshold, but add alerting that ties spikes to root causes
+      (CPU saturation, replica count changes, cache miss spikes) using
+      <a style="color:#E6522C; font-weight:bold;">Prometheus</a> + <a style="color:#f46800; font-weight:bold;">Grafana</a>.
+    </li>
+  </ul>
+
+  <h3 style="margin-top:1.25rem;">Final thoughts</h3>
+
+  <p>
+    The core lesson is that production ML is less about "running a model" and more about building a system that is
+    <strong>repeatable</strong>, <strong>observable</strong>, and <strong>robust under real traffic</strong>.
+    <a style="color:#0db7ed; font-weight:bold;">Docker</a> + <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> make deployment predictable,
+    <a style="color: #d82c20; font-weight: bold;">Redis</a> shifts work away from expensive inference,
+    and <a style="color:#7d64ff; font-weight:bold;">k6</a> + <a style="color:#f46800; font-weight:bold;">Grafana</a> turn performance
+    into something you can measure, debug, and improve iteratively.
+  </p>
+
+  <p>
+    If you're building something similar, the fastest way to level up is to treat your model like any other production dependency:
+    define health checks, enforce SLOs, test under load, and let metrics drive the next optimization.
+  </p>
+
+  <p>
+    If you'd like to discuss ML systems, distributed inference, or production deployment feel free to reach out 😊
+  </p>
+</section>
+
+  </main>
+  <footer class="footer">
+    <img src="../images/name.png" alt="Ronald Nap signature" class="footer-signature" />
+    <p class="footer-email"><a href="mailto:rnap@berkeley.edu">rnap@berkeley.edu</a></p>
+    <div class="footer-icons">
+      <a href="https://github.com/napronald" target="_blank" rel="noopener" aria-label="GitHub" class="icon-link">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" fill="currentColor">
+          <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z" />
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/ronaldnap/" target="_blank" rel="noopener" aria-label="LinkedIn" class="icon-link">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+          <path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z" />
+        </svg>
+      </a>
+      <a href="https://leetcode.com/u/ronaldnap/" target="_blank" rel="noopener" aria-label="LeetCode" class="icon-link">
+      <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z" />
+      </svg>
+      </a>
+      <a href="mailto:rnap@berkeley.edu" aria-label="Email" class="icon-link">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+          <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+        </svg>
+      </a>
+    </div>
+    <p class="footer-made">Made with ☕ by Ronald Nap</p>
+    <p class="footer-made">© 2026 All Rights Reserved</p>
+  </footer>
+</body>
+</html>
