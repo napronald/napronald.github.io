@@ -10,7 +10,7 @@
 <body>
   <nav class="main-nav">
     <div class="nav-brand">
-      <a href="/index.html" class="nav-brand-link">
+      <a href="../index.html" class="nav-brand-link">
         <img src="../images/initial.png" alt="Ronald Nap initial" class="nav-initial">
       </a>
       <div class="nav-text">
@@ -18,10 +18,10 @@
         <span class="nav-tagline">Machine Learning Engineer</span>
       </div>
     </div>
-    <div class="nav-links">
-      <a href="../index.html">Projects</a>
-      <a href="resume.html">About</a>
-    </div>
+    <!-- <div class="nav-links"> -->
+      <!-- <a href="../index.html">Projects</a> -->
+      <!-- <a href="resume.html">About</a> -->
+    <!-- </div> -->
   </nav>
 
   <main class="blog-wrapper">
@@ -68,8 +68,7 @@
 
   <p>
     Prototypes are optimized for speed. With
-    <a style="color: #ffcc4d; font-weight: bold;">Hugging Face</a>,
-    you can load a pretrained model and run inference quickly. However,
+    <a style="color: #ffcc4d; font-weight: bold;">Hugging Face</a>, you can load a pretrained model and run inference quickly. However,
     in production, the problem shift from "does it work?" to "does it keep working?"
   </p>
 
@@ -99,10 +98,14 @@
 <section class="blog-section">
   <h2>Model + API</h2>
 
+      <figure class="img-wide">
+        <img src="../images/mlapi/mlapi1.png"
+            class="blog-image">
+      </figure>
+
   <p>
-    The model used in this project is a Hugging Face <a style="color: #ffcc4d; font-weight: bold;">DistilBERT</a> sentiment classifier.
-    In this project, I fine-tuned the model and exported everything into a local
-    folder (<code>distilbert-base-uncased-finetuned-sst2/</code>), which includes the model weights (
+    The model used in this project is a Hugging Face <a style="color: #ffcc4d; font-weight: bold;">DistilBERT</a> sentiment classifier,
+    I fine-tuned the model and exported everything which includes the model weights (
     <code>model.safetensors</code>, <code>pytorch_model.bin</code>) and the tokenizer/config artifacts
     (<code>config.json</code>, <code>tokenizer.json</code>, <code>vocab.txt</code>). Altogether, the bundle is roughly
     1GB, which is why packaging and deployment choices matter (more on this later).
@@ -233,6 +236,11 @@
 
 <section class="blog-section" id="infra">
   <h2>Infrastructure Configuration</h2>
+
+      <figure class="img-wide">
+        <img src="../images/mlapi/mlapi2.png"
+            class="blog-image">
+      </figure>
 
   <p>
     After containerizing the service, I deployed it on <a style="color:#326ce5; font-weight:bold;">Kubernetes</a> using
@@ -520,6 +528,11 @@
 <section class="blog-section" id="load">
   <h2>Load Testing (k6)</h2>
 
+      <figure class="img-wide">
+        <img src="../images/mlapi/mlapi3.png"
+            class="blog-image">
+      </figure>
+
   <p>
     Once the API is deployed, the next question becomes: <em>how does it behave under real traffic?</em>
     In production, requests rarely arrive at a perfectly steady rate. Instead, systems see ramp-ups,
@@ -705,8 +718,7 @@ data_sent: 1.1 MB (1.7 kB/s)
     <a style="color:#466BB0; font-weight:bold;">Istio</a> sidecars emit rich
     telemetry to <a style="color:#E6522C; font-weight:bold;">Prometheus</a>, and
     <a style="color:#f46800; font-weight:bold;">Grafana</a>
-    turns that data into dashboards. This section focuses on the most important
-    question for a production-facing ML API:
+    turns that data into dashboards. This section showcases how our system performs under load and answers:
     <em>what does <a style="color: #d82c20; font-weight: bold;">Redis</a> caching do to end-to-end latency under steady traffic?</em>
   </p>
 
@@ -867,10 +879,10 @@ data_sent: 1.1 MB (1.7 kB/s)
   </p>
 
   <ul>
-    <li><span style="color:#7ad67a; font-weight:bold;">P50</span>: around <strong>10-25% lower</strong></li>
-    <li><span style="color:#ffd666; font-weight:bold;">P90</span>: around <strong>15-25% lower</strong></li>
-    <li><span style="color:#66ccff; font-weight:bold;">P95</span>: around <strong>15-25% lower</strong></li>
-    <li><span style="color:#ffb347; font-weight:bold;">P99</span>: around <strong>20-30% lower</strong></li>
+    <li><span style="color:#7ad67a; font-weight:bold;">P50</span>: around <strong>5-15% lower</strong></li>
+    <li><span style="color:#ffd666; font-weight:bold;">P90</span>: around <strong>10-20% lower</strong></li>
+    <li><span style="color:#66ccff; font-weight:bold;">P95</span>: around <strong>10-20% lower</strong></li>
+    <li><span style="color:#ffb347; font-weight:bold;">P99</span>: around <strong>15-25% lower</strong></li>
   </ul>
 
   <p>

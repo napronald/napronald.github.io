@@ -125,9 +125,11 @@ header.hero p {
   color: #ffffff;
 }
 
+
+
 .projects-section {
   padding: 2rem 1rem 4rem;
-  max-width: 1200px;
+  max-width: 1350px;
   margin: 0 auto;
 }
 
@@ -145,16 +147,16 @@ header.hero p {
 }
 
 .project-card.split {
-  max-height: 470px; 
+  max-height: 375px; 
 }
 
 .project-card.large {
-  height: 450px;
+  height: 480px;
   grid-column: span 2;
 }
 
 .project-card.small {
-  height: 450px;
+  height: 375px;
 }
 
 .project-card {
@@ -236,6 +238,12 @@ header.hero p {
 .overlay-buttons a:hover {
   background-color: #ffffff;
   color: var(--accent);
+}
+
+@media (max-width: 2400px) {
+  .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 900px) {
